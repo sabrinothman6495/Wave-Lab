@@ -1,4 +1,3 @@
-// src/models/Recording.ts
 import mongoose, { Document, Schema } from 'mongoose';
 
 // TypeScript interface for Recording document
