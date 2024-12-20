@@ -1,20 +1,21 @@
-import express from 'express';
-import path from 'node:path';
-import type { Request, Response } from 'express';
-import db from './config/connection.js'
-import { ApolloServer } from '@apollo/server';// Note: Import from @apollo/server-express
+import express, { Request, Response } from 'express';
+import path from 'path';
+import { ApolloServer } from 'apollo-server-express';
 import { expressMiddleware } from '@apollo/server/express4';
-import { typeDefs, resolvers } from './schemas/index.js';
-import { authenticateToken } from './utils/auth.js';
+import { typeDefs, resolvers } from './schemas/index';
+import connectDb from './config/connection';
+import dotenv from 'dotenv';
+
+dotenv.config(); // Load environment variables from .env
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
 });
 
 const startApolloServer = async () => {
   await server.start();
-  await db();
+  await connectDb(); // Connect to MongoDB
 
   const PORT = process.env.PORT || 3001;
   const app = express();
@@ -22,12 +23,11 @@ const startApolloServer = async () => {
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
 
-  app.use('/graphql', expressMiddleware(server as any,
-    {
-      context: authenticateToken as any
-    }
-  ));
+  app.use('/graphql', expressMiddleware(server, {
+    // Optional: Add authentication middleware here if necessary
+  }));
 
+  // Serve static assets in production
   if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../client/dist')));
 
