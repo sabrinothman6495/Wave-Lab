@@ -1,4 +1,6 @@
 import React from 'react';
+import './Profile.css';
+
 
 interface UserProfile {
   username: string;
@@ -8,8 +10,8 @@ interface UserProfile {
 const Profile: React.FC = () => {
   // Example user data
   const userProfile: UserProfile = {
-    profilePic: 'insertpicpath', // Replace with a valid URL or fetched data
-    username:
+    profilePic: 'insertpicpath',
+    username: 'JohnDoe',
   };
 
   return (
@@ -27,4 +29,3 @@ const Profile: React.FC = () => {
 };
 
 export default Profile;
-
