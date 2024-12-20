@@ -1,5 +1,7 @@
 import React from 'react';
 import './Profile.css';
+import { Button } from '@chakra-ui/react';
+
 
 
 interface UserProfile {
@@ -24,6 +26,11 @@ const Profile: React.FC = () => {
         />
         <h1 className="profile-name">{userProfile.username}</h1>
       </div>
+
+<Button mt="4" colorScheme="blue" size="sm">
+  Edit Profile
+</Button>
+
     </div>
   );
 };

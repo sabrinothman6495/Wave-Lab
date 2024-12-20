@@ -13,9 +13,20 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@apollo/client": "^3.12.4",
+    "@chakra-ui/react": "^3.2.3",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
+    "bcrypt": "^5.1.1",
+    "framer-motion": "^11.15.0",
+    "jsonwebtoken": "^9.0.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.7"
   }
 }
