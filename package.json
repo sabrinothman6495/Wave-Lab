@@ -1,0 +1,21 @@
+{
+  "name": "wave-lab",
+  "version": "1.0.0",
+  "description": "a sound board app, that allows users to experiment and mix sounds",
+  "main": "App.tsx",
+  "scripts": {
+    "test": "npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "Wave-Lab"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}
