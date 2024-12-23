@@ -1,3 +1,4 @@
+/*
 import React, { useEffect, useRef, useState } from 'react';
 
 // Interface for props
@@ -6,7 +7,7 @@ interface WaveformProps {
 }
 
 const Waveform: React.FC<WaveformProps> = ({ audioUrl }) => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const canvasRef = useRef(null);
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
   const [audioBuffer, setAudioBuffer] = useState<AudioBuffer | null>(null);
   const [analyserNode, setAnalyserNode] = useState<AnalyserNode | null>(null);
@@ -105,3 +106,4 @@ const Waveform: React.FC<WaveformProps> = ({ audioUrl }) => {
 };
 
 export default Waveform;
+*/

@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@chakra-ui/react": "^3.2.3",
     "react": "^19.0.0"
   }
 }
