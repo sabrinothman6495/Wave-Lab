@@ -2,8 +2,9 @@ import express, { Request, Response } from 'express';
 import path from 'path';
 import { ApolloServer } from 'apollo-server-express';
 import { expressMiddleware } from '@apollo/server/express4';
-import { typeDefs, resolvers } from './schemas/index';
-import connectDb from './config/connection';
+import resolvers from './schemas/resolvers';
+import typeDefs from './schemas/typeDefs';
+import connectDb from './config/connections';
 import dotenv from 'dotenv';
 
 dotenv.config(); // Load environment variables from .env
