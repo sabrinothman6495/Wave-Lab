@@ -13,15 +13,18 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@apollo/server": "^4.11.2",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
+    "apollo-server-express": "^3.13.0",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mongoose": "^8.9.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "types": "file:../../../../apollo-server-express"
   }
 }
