@@ -2,7 +2,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 // TypeScript interface for User document
-export interface IUser extends Document {
+export interface User extends Document {
   username: string;
   password: string;
   profilePic: string;
@@ -11,7 +11,7 @@ export interface IUser extends Document {
 }
 
 // User Schema
-const userSchema = new Schema<IUser>({
+const userSchema = new Schema<User>({
   username: { type: String, required: true },
   password: { type: String, required: true },
   profilePic: { type: String, required: false
@@ -19,6 +19,6 @@ const userSchema = new Schema<IUser>({
 }, { timestamps: true });
 
 // User Model
-const User = mongoose.model<IUser>('User', userSchema);
+const User = mongoose.model<User>('User', userSchema);
 
 export default User;
