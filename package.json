@@ -1,6 +1,36 @@
 {
+  "name": "wave-lab",
+  "version": "1.0.0",
+  "description": "a sound board app, that allows users to experiment and mix sounds",
+  "main": "App.tsx",
+  "scripts": {
+    "test": "npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "Wave-Lab"
+  },
+  "author": "",
+  "license": "MIT",
   "dependencies": {
+    "@apollo/client": "^3.12.4",
     "@chakra-ui/react": "^3.2.3",
-    "react": "^19.0.0"
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@types/mongoose": "^5.11.97",
+    "@types/multer": "^1.4.12",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "bcrypt": "^5.1.1",
+    "framer-motion": "^11.15.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.2",
+    "multer": "^1.4.5-lts.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.7"
   }
 }
