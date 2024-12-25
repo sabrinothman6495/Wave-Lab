@@ -1,3 +1,4 @@
 import { userResolvers } from "./userResolvers";
+import { audioResolvers } from "./audioResolvers";
 
-export default [userResolvers];
+export default [userResolvers, audioResolvers];
