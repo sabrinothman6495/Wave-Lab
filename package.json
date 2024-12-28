@@ -1,19 +1,30 @@
 {
   "name": "wave-lab",
   "version": "1.0.0",
-  "description": "a sound board app, that allows users to experiment and mix sounds",
+  "description": "A soundboard app that allows users to experiment and mix sounds.",
   "main": "App.tsx",
   "scripts": {
+    "start": "nodemon server/src/index.ts",
+    "build": "tsc",
+    "client": "react-scripts start",
+    "server": "nodemon server/src/index.ts",
     "test": "npm start"
   },
   "repository": {
     "type": "git",
-    "url": "Wave-Lab"
+    "url": "https://github.com/your-repo/Wave-Lab"
   },
-  "author": "",
+  "author": "Your Name",
   "license": "MIT",
+  "keywords": [
+    "soundboard",
+    "MERN",
+    "typescript",
+    "audio mixing"
+  ],
   "dependencies": {
     "@apollo/client": "^3.12.4",
+    "@apollo/server": "^4.11.2",
     "@chakra-ui/react": "^3.2.3",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
@@ -22,15 +33,23 @@
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
     "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
     "framer-motion": "^11.15.0",
+    "graphql": "^16.10.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.2",
     "multer": "^1.4.5-lts.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
-    "@types/jsonwebtoken": "^9.0.7"
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^22.10.2",
+    "nodemon": "^3.1.9",
+    "typescript": "^5.7.2"
   }
 }
