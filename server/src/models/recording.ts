@@ -4,9 +4,9 @@ import mongoose, { Document, Schema } from 'mongoose';
 export interface IRecording extends Document {
   title: string;
   audioUrl: string;
-  duration: number;         // Duration in seconds
-  fileType: string;         // File format (e.g., mp3, wav)
-  createdBy: mongoose.Schema.Types.ObjectId;  // User who uploaded the recording
+  duration: number;         
+  fileType: string;      
+  createdBy: mongoose.Schema.Types.ObjectId;  
   createdAt: Date;
   updatedAt: Date;
 }

@@ -2,9 +2,9 @@ import express from 'express';
 import path from 'node:path';
 import type { Request, Response } from 'express';
 import { ApolloServer } from '@apollo/server';
-import { expressMiddleware } from '@apollo/server/express4';
-import typeDefs from './typeDefs';
-import resolvers from './resolvers';
+// import { expressMiddleware } from '@apollo/server/express4';
+import typeDefs from './src/typeDefs';
+import resolvers from './src/resolvers';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
@@ -26,8 +26,8 @@ const startApolloServer = async () => {
   app.use(express.json());
   app.use(cors());
 
-  // Use expressMiddleware correctly
-  app.use('/graphql', expressMiddleware(server));
+  // uncoment to correctly use expressMiddleware
+  // app.use('/graphql', expressMiddleware(server));
 
   if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../client/dist')));
