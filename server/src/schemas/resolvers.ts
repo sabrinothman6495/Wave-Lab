@@ -1,7 +1,7 @@
 // import { audioFile, User } from '../models/index.js';
 // import { signToken, AuthenticationError } from '../utils/auth.js'; 
 
-import User from "../models/User";
+import User from "../models/user.js";
 
 // Define types for the arguments
 interface AddUserArgs {
