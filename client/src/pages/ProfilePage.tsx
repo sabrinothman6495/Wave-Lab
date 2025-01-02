@@ -1,4 +1,8 @@
 import React from 'react';
+import './Profile.css';
+import { Button } from '@chakra-ui/react';
+
+
 
 interface UserProfile {
   username: string;
@@ -8,8 +12,8 @@ interface UserProfile {
 const Profile: React.FC = () => {
   // Example user data
   const userProfile: UserProfile = {
-    profilePic: 'insertpicpath', // Replace with a valid URL or fetched data
-    username:
+    profilePic: 'insertpicpath',
+    username: 'JohnDoe',
   };
 
   return (
@@ -22,9 +26,13 @@ const Profile: React.FC = () => {
         />
         <h1 className="profile-name">{userProfile.username}</h1>
       </div>
+
+<Button mt="4" colorScheme="blue" size="sm">
+  Edit Profile
+</Button>
+
     </div>
   );
 };
 
 export default Profile;
-
