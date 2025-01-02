@@ -11,7 +11,7 @@ interface MainPage {
 
 const MainPage: React.FC = () => {
     const mainPage: MainPage = {
-        title: 'Welcome to the Audio Waveform Generator',
+        title: 'Welcome to Wave-Lab',
         logo: 'https://via.placeholder.com/150',
         description: 'This is a simple audio waveform generator that allows you to upload an audio file and view its waveform.',
     };
@@ -21,8 +21,8 @@ const MainPage: React.FC = () => {
             <h1>{mainPage.title}</h1>
             <img src={mainPage.logo} alt='logo' />
             <p>{mainPage.description}</p>
-            <a href='/createuser'>{mainPage.createuser}</a>
-            <a href='/login'>{mainPage.login}</a>
+            <a href='/createuser'>Create User</a>
+            <a href='/login'>Login</a>
             <Button mt="4" colorScheme="blue" size="sm">
                 Create User
             </Button>
