@@ -1,5 +1,5 @@
-
 import React, { useState } from 'react';
+import ReactDOM from 'react-dom/client';
 import Navbar from '../client/src/components/Navbar'; 
 import './index.html';
 
@@ -24,5 +24,15 @@ const App: React.FC = () => {
     </div>
   );
 };
+
+const rootElement = document.getElementById('root');
+if (rootElement) {
+  const root = ReactDOM.createRoot(rootElement);
+  root.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+}
 
 export default App;
