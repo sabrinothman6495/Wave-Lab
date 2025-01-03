@@ -3,7 +3,7 @@ dotenv.config();
 
 import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.MONGODB_URI || '';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://user123:pass123@cluster0.ugn18.mongodb.net/';
 
 const db = async (): Promise<typeof mongoose.connection> => {
   try {
