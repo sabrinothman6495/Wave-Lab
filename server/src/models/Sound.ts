@@ -10,9 +10,9 @@ export interface ISound extends Document {
 
 const SoundSchema: Schema = new Schema(
   {
-    name: { type: String, required: true },
-    url: { type: String, required: true },
-    description: { type: String },
+    piano: { type: String, required: true },
+    guitar: { type: String, required: true },
+    trumpet: { type: String },
   },
   { timestamps: true }
 );
