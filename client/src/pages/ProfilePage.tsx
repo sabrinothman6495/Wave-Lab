@@ -2,15 +2,11 @@ import React from 'react';
 import './Profile.css';
 import { Button } from '@chakra-ui/react';
 
-
-
 interface UserProfile {
   username: string;
   profilePic: string; // URL of the profile picture
-
-  email: 'johndoe@gmail.com',
-  Sounds: 'sound1, sound2, sound3',
-  
+  email: string;
+  sounds: string;  // Changed to lowercase for consistency
 }
 
 const Profile: React.FC = () => {
@@ -19,8 +15,7 @@ const Profile: React.FC = () => {
     profilePic: 'insertpicpath',
     username: 'JohnDoe',
     email: 'johndoe@gmail.com',
-    Sounds: 'sound1, sound2, sound3',
-
+    sounds: 'sound1, sound2, sound3', // Fixed lowercase 'sounds'
   };
 
   return (
@@ -32,13 +27,16 @@ const Profile: React.FC = () => {
           className="profile-pic"
         />
         <h1 className="profile-name">{userProfile.username}</h1>
-        <Button> enter email</Button>
+        <p>Email: {userProfile.email}</p>
+        <p>Sounds: {userProfile.sounds}</p>
+        <Button colorScheme="blue" size="sm">
+          Enter Email
+        </Button>
       </div>
 
-<Button mt="4" colorScheme="blue" size="sm">
-  Edit Profile
-</Button>
-
+      <Button colorScheme="blue" size="sm" mt="4">
+        Edit Profile
+      </Button>
     </div>
   );
 };
