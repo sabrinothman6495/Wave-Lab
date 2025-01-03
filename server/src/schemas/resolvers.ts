@@ -1,5 +1,4 @@
-// import { audioFile, User } from '../models/index.js';
-// import { signToken, AuthenticationError } from '../utils/auth.js'; 
+import { signToken, AuthenticationError } from './utils/auth.js'; 
 
 import User from "../models/user.js";
 
