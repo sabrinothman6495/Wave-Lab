@@ -1,3 +1,18 @@
+<<<<<<< HEAD
+import React, { useState } from 'react';
+import 'App.css';
+import LandingPage from './src/pages/LandingPage';
+
+const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  return (
+    <div className="App">
+      {isLoggedIn ? <LandingPage /> : <div>Log in or create an account</div>}
+    </div>
+  );
+};
+=======
 import React from 'react';
 import './App.css';
 // Important for API Consumption: To enable interaction with our GraphQL API on the front end, we utilize these tools to develop the client-side behavior
@@ -20,5 +35,6 @@ function App() {
     </ApolloProvider>
   );
 }
+>>>>>>> origin/Hannahbranch
 
 export default App;

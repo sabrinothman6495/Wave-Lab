@@ -1,6 +1,8 @@
 import React from 'react';
 import './Profile.css';
 import { Button } from '@chakra-ui/react';
+import { HStack } from '@chakra-ui/react';
+import { Avatar } from '@chakra-ui/avatar';
 
 interface UserProfile {
   username: string;
@@ -9,14 +11,26 @@ interface UserProfile {
   sounds: string;  // Changed to lowercase for consistency
 }
 
+ const PlaceHolderPic = () => {
+    return (
+      <HStack gap="3">
+        <Avatar variant="solid" name="Sage Adebayo" />
+        <Avatar variant="outline" name="Sage Adebayo" />
+        <Avatar variant="subtle" name="Sage Adebayo" />
+      </HStack>
+    )
+  }
+
 const Profile: React.FC = () => {
   // Example user data
   const userProfile: UserProfile = {
-    profilePic: 'insertpicpath',
+    profilePic: 'https://via.placeholder.com/150',
     username: 'JohnDoe',
     email: 'johndoe@gmail.com',
     sounds: 'sound1, sound2, sound3', // Fixed lowercase 'sounds'
   };
+
+ 
 
   return (
     <div>
