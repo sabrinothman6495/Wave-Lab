@@ -1,21 +1,21 @@
-# Name of the GitHub Actions workflow
-name: Wave Lab Deploy
+# # Name of the GitHub Actions workflow
+# name: Wave Lab Deploy
 
-# Trigger the workflow on push and pull request events to the main branch
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches:
-      - main
-      - Sabrin-server
-      - FrontEnd
-      - gracebranch4
-      - Hannahbranch
-      - GraceBranch3
-      - AndrewBranch
-      - GraceBranch
-      - GraceBranch2
+# # Trigger the workflow on push and pull request events to the main branch
+# on:
+#   push:
+#     branches: [main]
+#   pull_request:
+#     branches:
+#       - main
+#       - Sabrin-server
+#       - FrontEnd
+#       - gracebranch4
+#       - Hannahbranch
+#       - GraceBranch3
+#       - AndrewBranch
+#       - GraceBranch
+#       - GraceBranch2
 
 
 
