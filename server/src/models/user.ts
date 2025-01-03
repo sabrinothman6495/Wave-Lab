@@ -1,28 +1,62 @@
-// server/src/models/User.ts
-import mongoose, { Document, Schema } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
+import bcrypt from 'bcrypt';
 
-// TypeScript interface for User document
-export interface User extends Document {
+// Define an interface for the User document
+interface IUser extends Document {
   username: string;
+  email: string;
   password: string;
-  profilePic: string;
-  role: string;
-  createdAt: Date;
-  updatedAt: Date;
-  generateToken(): string;
-  comparePassword(password: string): Promise<boolean>;
+  Sound: Schema.Types.ObjectId[];
+  isCorrectPassword(password: string): Promise<boolean>;
 }
 
-// User Schema
-const userSchema = new Schema<User>({
-  username: { type: String, required: true },
-  password: { type: String, required: true },
-  role: { type: String, default: 'USER' },
-  profilePic: { type: String, required: false
+// Define the schema for the User document
+const userSchema = new Schema<IUser>(
+  {
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      match: [/.+@.+\..+/, 'Must match an email address!'],
+    },
+    password: {
+      type: String,
+      required: true,
+      minlength: 5,
+    },
+    Sound: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'sound',
+      },
+    ],
+  },
+  {
+    timestamps: true,
+    toJSON: { getters: true },
+    toObject: { getters: true },
   }
-}, { timestamps: true });
+);
 
-// User Model
-const User = mongoose.model<User>('User', userSchema);
+userSchema.pre<IUser>('save', async function (next) {
+  if (this.isNew || this.isModified('password')) {
+    const saltRounds = 10;
+    this.password = await bcrypt.hash(this.password, saltRounds);
+  }
+
+  next();
+});
+
+userSchema.methods.isCorrectPassword = async function (password: string): Promise<boolean> {
+  return bcrypt.compare(password, this.password);
+};
+
+const User = model<IUser>('User', userSchema);
 
 export default User;
