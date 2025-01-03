@@ -25,6 +25,7 @@
   "dependencies": {
     "@apollo/client": "^3.12.4",
     "@apollo/server": "^4.11.2",
+    "@chakra-ui/avatar": "^2.3.0",
     "@chakra-ui/react": "^3.2.3",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
@@ -41,7 +42,8 @@
     "mongoose": "^8.9.2",
     "multer": "^1.4.5-lts.1",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.1.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

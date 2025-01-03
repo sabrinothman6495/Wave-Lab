@@ -1,6 +1,6 @@
-
 import React from 'react';
-import { Link } from 'react-router-dom';
+import './LandingPage.css';
+import { Button } from '@chakra-ui/react';
 
 const LandingPage: React.FC = () => {
   return (
@@ -15,8 +15,8 @@ const LandingPage: React.FC = () => {
         <p>In order to access this website, you must log in or create an account</p>
       </div>
       <div>
-        <button className="Log In">LOG IN</button>
-        <button className="Sign Up">SIGN UP</button>
+        <Button mt="4" colorScheme="blue" size="lg">LOG IN</Button>
+        <Button mt="4" colorScheme="blue" size="lg">SIGN UP</Button>
       </div>
     </div>
   );

@@ -1,6 +1,8 @@
 import React from 'react';
 import './Profile.css';
 import { Button } from '@chakra-ui/react';
+import { HStack } from '@chakra-ui/react';
+import { Avatar } from '@chakra-ui/avatar';
 
 
 
@@ -9,12 +11,24 @@ interface UserProfile {
   profilePic: string; // URL of the profile picture
 }
 
+ const PlaceHolderPic = () => {
+    return (
+      <HStack gap="3">
+        <Avatar variant="solid" name="Sage Adebayo" />
+        <Avatar variant="outline" name="Sage Adebayo" />
+        <Avatar variant="subtle" name="Sage Adebayo" />
+      </HStack>
+    )
+  }
+
 const Profile: React.FC = () => {
   // Example user data
   const userProfile: UserProfile = {
-    profilePic: 'insertpicpath',
+    profilePic: 'https://via.placeholder.com/150',
     username: 'JohnDoe',
   };
+
+ 
 
   return (
     <div className="profile-container">
