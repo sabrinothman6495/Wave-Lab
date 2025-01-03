@@ -1,14 +1,15 @@
 import type { Request, Response } from 'express';
 // Import the user model and signToken function
-import User from '../models/User.js';
-import { signToken } from '../services/auth.js';
+import User from '../models/user.js';
+import { signToken } from '../utils/auth.js';
+
 
 export const getUserProfile = (req: Request, res: Response) => {
     const user = req.user; // TypeScript now recognizes the 'user' property
     if (!user) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
-    res.json({ profile: user });
+    return res.json({ profile: user });
   };
 
 // Create user

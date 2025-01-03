@@ -1,6 +1,5 @@
 import express, { Request, Response } from 'express';
 import multer from 'multer';
-import cloudinary from '../config/cloudinary';
 import AudioProjectModel from '../models/AudioProject';
 
 interface AudioUploadBody {
@@ -16,15 +15,15 @@ router.post(
   upload.single('audioFile'),
   async (req: Request<{}, {}, AudioUploadBody>, res: Response) => {
     try {
-      const result = await cloudinary.uploader.upload(req.file!.path, {
-        resource_type: 'auto', // Automatically detect file type
-      });
+      const result = {
+        filename: req.file?.filename,
+        path: req.file?.path,
+      };
 
       const audioProject = new AudioProjectModel({
         userId: req.body.userId,
         title: req.body.title,
-        audioUrl: result.secure_url,
-        cloudinaryId: result.public_id,
+        audioUrl: result.path, // Assuming you want to store the file path
       });
 
       await audioProject.save();

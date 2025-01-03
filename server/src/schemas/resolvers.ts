@@ -1,15 +1,16 @@
-// import { audioFile, User } from '../models/index.js';
-// import { signToken, AuthenticationError } from '../utils/auth.js'; 
+import User from '../models/user.js';
+import Sound from '../models/Sound.js';
+import Category from '../models/Category.js';
+import { signToken } from '../utils/auth.js';
+import { AuthenticationError } from 'apollo-server-express';
 
-import User from "../models/User";
-
-// Define types for the arguments
+// Type definitions
 interface AddUserArgs {
-  input:{
+  input: {
     username: string;
     email: string;
     password: string;
-  }
+  };
 }
 
 interface LoginUserArgs {
@@ -17,163 +18,69 @@ interface LoginUserArgs {
   password: string;
 }
 
-interface UserArgs {
-  username: string;
-}
-
-interface SoundArgs {
-    soundId: string;
-    
-
-
-
-}
-
-interface AddAudioArgs {
-  input:{
-    audioText: string;
-    audioAuthor: string;
-
-  }
-}
-
-interface AddCommentArgs {
-  thoughtId: string;
-  commentText: string;
-}
-
-interface RemoveCommentArgs {
-  thoughtId: string;
-  commentId: string;
+interface Context {
+  user?: {
+    _id: string;
+  };
 }
 
 const resolvers = {
   Query: {
-    users: async () => {
-      return User.find().populate('thoughts');
+    users: async () => User.find().populate('sounds'),
+    user: async (_parent: any, { username }: { username: string }) =>
+      User.findOne({ username }).populate('sounds'),
+    getSounds: async () => Sound.find().populate('category'),
+    getSound: async (_parent: any, { id }: { id: string }) => {
+      const sound = await Sound.findById(id).populate('category');
+      if (!sound) throw new Error(`Sound with ID ${id} not found.`);
+      return sound;
     },
-    user: async (_parent: any, { username }: UserArgs) => {
-      return User.findOne({ username }).populate('thoughts');
-    },
-    thoughts: async () => {
-      return await user.find().sort({ createdAt: -1 });
-    },
-    thought: async (_parent: any, { thoughtId }: ThoughtArgs) => {
-      return await User.findOne({ _id: thoughtId });
-    },
-    // Query to get the authenticated user's information
-    // The 'me' query relies on the context to check if the user is authenticated
-    me: async (_parent: any, _args: any, context: any) => {
-      // If the user is authenticated, find and return the user's information along with their thoughts
+    getCategories: async () => Category.find(),
+    me: async (_parent: any, _args: any, context: Context) => {
       if (context.user) {
-        return User.findOne({ _id: context.user._id }).populate('thoughts');
+        return User.findById(context.user._id).populate('sounds');
       }
-      // If the user is not authenticated, throw an AuthenticationError
-      throw new AuthenticationError('Could not authenticate user.');
+      throw new AuthenticationError('You need to be logged in!');
     },
   },
   Mutation: {
     addUser: async (_parent: any, { input }: AddUserArgs) => {
-      // Create a new user with the provided username, email, and password
-      const user = await User.create({ ...input });
-    
-      // Sign a token with the user's information
-      const token = signToken(user.username, user.email, user._id);
-    
-      // Return the token and the user
+      const user = await User.create(input);
+      const token = signToken(user.email, user.username, user._id);
       return { token, user };
     },
-    
     login: async (_parent: any, { email, password }: LoginUserArgs) => {
-      // Find a user with the provided email
       const user = await User.findOne({ email });
-    
-      // If no user is found, throw an AuthenticationError
-      if (!user) {
-        throw new AuthenticationError('Could not authenticate user.');
-      }
-    
-      // Check if the provided password is correct
-      const correctPw = await user.isCorrectPassword(password);
-    
-      // If the password is incorrect, throw an AuthenticationError
-      if (!correctPw) {
-        throw new AuthenticationError('Could not authenticate user.');
-      }
-    
-      // Sign a token with the user's information
-      const token = signToken(user.username, user.email, user._id);
-    
-      // Return the token and the user
+      if (!user) throw new AuthenticationError('Invalid credentials');
+      const validPassword = await user.isCorrectPassword(password);
+      if (!validPassword) throw new AuthenticationError('Invalid credentials');
+      const token = signToken(user.email, user.username, user._id);
       return { token, user };
     },
-    addThought: async (_parent: any, { input }: AddThoughtArgs, context: any) => {
-      if (context.user) {
-        const thought = await Thought.create({ ...input });
-
-        await User.findOneAndUpdate(
-          { _id: context.user._id },
-          { $addToSet: { thoughts: thought._id } }
-        );
-
-        return thought;
-      }
-      throw AuthenticationError;
-      ('You need to be logged in!');
+    addSound: async (_parent: any, { name, fileUrl, category }: { name: string; fileUrl: string; category: string }) => {
+      const sound = await Sound.create({ name, fileUrl, category });
+      return sound.populate('category');
     },
-    addComment: async (_parent: any, { thoughtId, commentText }: AddCommentArgs, context: any) => {
-      if (context.user) {
-        return Audio.findOneAndUpdate(
-          { _id: thoughtId },
-          {
-            $addToSet: {
-              comments: { commentText, commentAuthor: context.user.username },
-            },
-          },
-          {
-            new: true,
-            runValidators: true,
-          }
-        );
-      }
-      throw AuthenticationError;
+    deleteSound: async (_parent: any, { id }: { id: string }, context: Context) => {
+      if (!context.user) throw new AuthenticationError('Unauthorized');
+      const sound = await Sound.findByIdAndDelete(id);
+      if (!sound) throw new Error(`Sound with ID ${id} not found.`);
+      return Boolean(sound);
     },
-    removeThought: async (_parent: any, { thoughtId }: ThoughtArgs, context: any) => {
-      if (context.user) {
-        const thought = await Thought.findOneAndDelete({
-          _id: thoughtId,
-          thoughtAuthor: context.user.username,
-        });
-
-        if(!thought){
-          throw AuthenticationError;
-        }
-
-        await user.findOneAndUpdate(
-          { _id: context.user._id },
-          { $pull: { thoughts: thought._id } }
-        );
-
-        return thought;
-      }
-      throw AuthenticationError;
+    addCategory: async (_parent: any, { name }: { name: string }) => {
+      return Category.create({ name });
     },
-    removeComment: async (_parent: any, { thoughtId, commentId }: RemoveCommentArgs, context: any) => {
-      if (context.user) {
-        return User.findOneAndUpdate(
-          { _id: thoughtId },
-          {
-            $pull: {
-              comments: {
-                _id: commentId,
-                commentAuthor: context.user.username,
-              },
-            },
-          },
-          { new: true }
-        );
-      }
-      throw AuthenticationError;
+    deleteCategory: async (_parent: any, { id }: { id: string }) => {
+      const category = await Category.findByIdAndDelete(id);
+      if (!category) throw new Error(`Category with ID ${id} not found.`);
+      return Boolean(category);
+    },
+    createSound: async (
+      _parent: any,
+      { userId, title, audioUrl }: { userId: string; title: string; audioUrl: string }
+    ) => {
+      const sound = await Sound.create({ userId, title, audioUrl });
+      return sound.populate('userId');
     },
   },
 };
