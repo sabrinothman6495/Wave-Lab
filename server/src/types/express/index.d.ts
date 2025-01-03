@@ -1,5 +1,7 @@
 declare namespace Express {
-  export interface Request {
-    file?: Multer.File;
+  interface Request {
+    user?: {
+      username: string;
+    };
   }
 }
