@@ -1,8 +1,6 @@
 import React from 'react';
 import './Profile.css';
 import { Button } from '@chakra-ui/react';
-import { Stack } from '@chakra-ui/react';
-import { Avatar } from '@chakra-ui/avatar';
 
 interface UserProfile {
   username: string;
@@ -11,15 +9,6 @@ interface UserProfile {
   sounds: string;  // Changed to lowercase for consistency
 }
 
- const PlaceHolderPic = () => {
-    return (
-      <Stack direction="row" gap="3">
-        <Avatar variant="solid" name="Sage Adebayo" />
-        <Avatar variant="outline" name="Sage Adebayo" />
-        <Avatar variant="subtle" name="Sage Adebayo" />
-      </Stack>
-    )
-  }
 
 const Profile: React.FC = () => {
   // Example user data
