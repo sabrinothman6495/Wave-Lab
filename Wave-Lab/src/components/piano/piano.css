@@ -1,0 +1,38 @@
+/* Piano Container */
+.piano {
+    display: flex;
+    position: relative;
+    background-color: #fff;
+    border: 2px solid black;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    margin: 20px auto;
+  }
+  
+  /* White Keys */
+  .white-key {
+    width: 40px;
+    height: 180px;
+    background-color: white;
+    border: 1px solid black;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Black Keys */
+  .black-key {
+    width: 30px;
+    height: 120px;
+    background-color: black;
+    position: relative;
+    top: -25px;
+    transform: translateX(-50%);
+    z-index: 2;
+    border-radius: 0 0 3px 3px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+  }
+  
+  /* Prevent Gaps */
+
+  
