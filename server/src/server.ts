@@ -1,15 +1,14 @@
 import express from 'express';
 import path from 'node:path';
 import type { Request, Response } from 'express';
-import { ApolloServer } from '@apollo/server';
-// import { expressMiddleware } from '@apollo/server/express4';
-import typeDefs from './src/typeDefs';
-import resolvers from './src/resolvers';
-import cors from 'cors';
-import dotenv from 'dotenv';
+import db from './config/connection.js'
+import { ApolloServer } from '@apollo/server';// Note: Import from @apollo/server-express
+import { expressMiddleware } from '@apollo/server/express4';
+import { typeDefs, resolvers } from './schemas/index.js';
+import authenticateToken  from './utils/auth.js';
 
-// Load environment variables
-dotenv.config();
+
+
 
 const server = new ApolloServer({
   typeDefs,
@@ -18,16 +17,19 @@ const server = new ApolloServer({
 
 const startApolloServer = async () => {
   await server.start();
+  await db();
 
   const PORT = process.env.PORT || 3001;
   const app = express();
 
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
-  app.use(cors());
 
-  // uncoment to correctly use expressMiddleware
-  // app.use('/graphql', expressMiddleware(server));
+  app.use('/graphql', expressMiddleware(server as any,
+    {
+      context: authenticateToken as any
+    }
+  ));
 
   if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../client/dist')));
