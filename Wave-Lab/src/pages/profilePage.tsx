@@ -47,7 +47,7 @@ const Profile: React.FC = () => {
         </Text>
 
         {/* Buttons */}
-        <Button colorScheme="blue" size="sm">
+        <Button colorScheme="red" size="md" >
           Enter Email
         </Button>
         <Button colorScheme="blue" size="sm" mt="2">
