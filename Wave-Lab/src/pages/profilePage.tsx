@@ -1,14 +1,12 @@
 import React from 'react';
-import './Profile.css';
-import { Button } from '@chakra-ui/react';
+import { Box, Button, Image, Text, Heading, VStack } from '@chakra-ui/react';
 
 interface UserProfile {
   username: string;
   profilePic: string; // URL of the profile picture
   email: string;
-  sounds: string;  // Changed to lowercase for consistency
+  sounds: string; // Lowercase for consistency
 }
-
 
 const Profile: React.FC = () => {
   // Example user data
@@ -16,31 +14,47 @@ const Profile: React.FC = () => {
     profilePic: 'https://via.placeholder.com/150',
     username: 'JohnDoe',
     email: 'johndoe@gmail.com',
-    sounds: 'sound1, sound2, sound3', // Fixed lowercase 'sounds'
+    sounds: 'sound1, sound2, sound3',
   };
 
- 
-
   return (
-    <div>
-      <div>
-        <img
+    <Box
+      maxW="400px"
+      mx="auto"
+      mt="8"
+      p="6"
+      borderWidth="1px"
+      borderRadius="lg"
+      boxShadow="md"
+      bg="white"
+    >
+      <VStack gap={4}>
+        {/* Profile Picture */}
+        <Image
+          borderRadius="full"
+          boxSize="120px"
           src={userProfile.profilePic}
           alt={`${userProfile.username}'s profile`}
-          className="profile-pic"
         />
-        <h1 className="profile-name">{userProfile.username}</h1>
-        <p>Email: {userProfile.email}</p>
-        <p>Sounds: {userProfile.sounds}</p>
+
+        {/* User Info */}
+        <Heading size="lg">{userProfile.username}</Heading>
+        <Text fontSize="md" color="gray.600">
+          Email: {userProfile.email}
+        </Text>
+        <Text fontSize="md" color="gray.600">
+          Sounds: {userProfile.sounds}
+        </Text>
+
+        {/* Buttons */}
         <Button colorScheme="blue" size="sm">
           Enter Email
         </Button>
-      </div>
-
-      <Button colorScheme="blue" size="sm" mt="4">
-        Edit Profile
-      </Button>
-    </div>
+        <Button colorScheme="blue" size="sm" mt="2">
+          Edit Profile
+        </Button>
+      </VStack>
+    </Box>
   );
 };
 
