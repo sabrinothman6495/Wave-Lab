@@ -8,11 +8,12 @@ interface UserProfile {
   username: string;
   profilePic: string; // URL of the profile picture
   email: string;
-  sounds: string;  // Changed to lowercase for consistency
+  sounds: string [];  // Changed to lowercase for consistency
 }
 
  const PlaceHolderPic = () => {
     return (
+      
       <HStack gap="3">
         <Avatar variant="solid" name="Sage Adebayo" />
         <Avatar variant="outline" name="Sage Adebayo" />
@@ -27,7 +28,7 @@ const Profile: React.FC = () => {
     profilePic: 'https://via.placeholder.com/150',
     username: 'JohnDoe',
     email: 'johndoe@gmail.com',
-    sounds: 'sound1, sound2, sound3', // Fixed lowercase 'sounds'
+    sounds: ['sound1, sound2, sound3'], // Fixed lowercase 'sounds'
   };
 
  
@@ -40,6 +41,7 @@ const Profile: React.FC = () => {
           alt={`${userProfile.username}'s profile`}
           className="profile-pic"
         />
+        <PlaceHolderPic />
         <h1 className="profile-name">{userProfile.username}</h1>
         <p>Email: {userProfile.email}</p>
         <p>Sounds: {userProfile.sounds}</p>
