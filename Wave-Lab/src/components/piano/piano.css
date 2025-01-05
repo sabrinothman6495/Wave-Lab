@@ -22,7 +22,7 @@
   
   /* Black Keys */
   .black-key {
-    width: 30px;
+    width: 20px;
     height: 120px;
     background-color: black;
     position: relative;
@@ -34,5 +34,12 @@
   }
   
   /* Prevent Gaps */
-
+.white-key {
+    margin-right: -1px;
+  }
+  
+  /* Prevent Gaps */
+  .black-key {
+    margin-right: -19px;
+}
   
