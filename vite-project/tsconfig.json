@@ -1,7 +1,8 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+  "compilerOptions": {
+    "plugins": ["@vitejs/plugin-react"]
+  },
+  "server": {
+    "port": 5173
+  }
 }

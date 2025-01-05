@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom/client';
-import Navbar from '../client/src/components/Navbar'; 
-import './index.html';
+import Navbar from './components/Navbar'; 
 
 const App: React.FC = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
@@ -15,7 +13,13 @@ const App: React.FC = () => {
   };
 
   return (
-    <div style={{ backgroundColor: theme === 'light' ? '#fff' : '#333', color: theme === 'light' ? '#000' : '#fff', minHeight: '100vh' }}>
+    <div
+      style={{
+        backgroundColor: theme === 'light' ? '#fff' : '#333',
+        color: theme === 'light' ? '#000' : '#fff',
+        minHeight: '100vh',
+      }}
+    >
       <Navbar onLogout={handleLogout} theme={theme} onThemeToggle={handleThemeToggle} />
       <main>
         <h1>Welcome to the Soundboard App</h1>
@@ -24,15 +28,5 @@ const App: React.FC = () => {
     </div>
   );
 };
-
-const rootElement = document.getElementById('root');
-if (rootElement) {
-  const root = ReactDOM.createRoot(rootElement);
-  root.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
-}
 
 export default App;

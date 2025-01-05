@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
-import Homepage from '../client/src/pages/HomePage';
-import './index.html';
+import Homepage from './pages/HomePage';
 
 const router = createBrowserRouter([
   {
