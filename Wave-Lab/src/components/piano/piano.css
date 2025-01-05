@@ -42,4 +42,15 @@
   .black-key {
     margin-right: -19px;
 }
+
+/* Active Keys */
+.white-key.active {
+  background-color: #ddd;
+  transform: translateY(2px);
+}
+
+.black-key.active {
+  background-color: #444;
+  transform: translateY(2px);
+}
   
