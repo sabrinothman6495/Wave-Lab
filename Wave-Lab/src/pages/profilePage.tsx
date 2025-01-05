@@ -1,7 +1,7 @@
 import React from 'react';
 import './Profile.css';
 import { Button } from '@chakra-ui/react';
-import { HStack } from '@chakra-ui/react';
+import { Stack } from '@chakra-ui/react';
 import { Avatar } from '@chakra-ui/avatar';
 
 interface UserProfile {
@@ -13,11 +13,11 @@ interface UserProfile {
 
  const PlaceHolderPic = () => {
     return (
-      <HStack gap="3">
+      <Stack direction="row" gap="3">
         <Avatar variant="solid" name="Sage Adebayo" />
         <Avatar variant="outline" name="Sage Adebayo" />
         <Avatar variant="subtle" name="Sage Adebayo" />
-      </HStack>
+      </Stack>
     )
   }
 
