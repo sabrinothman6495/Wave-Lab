@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/navbar/navbar.tsx","./src/components/piano/piano.tsx","./src/components/sliders/sliders.tsx","./src/pages/homepage.tsx","./src/pages/landingpage.tsx","./src/pages/profilepage.tsx","./src/types/chakra/provider.d.ts"],"errors":true,"version":"5.7.2"}

@@ -1,31 +1,42 @@
-import React from 'react';
-import './Piano.css';
+import React from "react";
+import "./piano.css";
 
-interface PianoKeyProps {
-    id: string;
-    isBlack: boolean;
+interface KeyProps {
+  isBlack: boolean;
+  position?: string; // Used for black key positioning
 }
 
-const PianoKey: React.FC<PianoKeyProps> = ({ id, isBlack }) => {
-    return <div id={id} className={isBlack ? 'black-key' : 'white-key'}></div>;
+const PianoKey: React.FC<KeyProps> = ({ isBlack }) => {
+  return (
+    <div className={isBlack ? "black-key" : "white-key"}>
+      {isBlack && <div />}
+    </div>
+  );
 };
 
 const Piano: React.FC = () => {
-    const generateKeys = () => {
-        const keys: JSX.Element[] = [];
-        const notes = ['E', 'F', 'F-', 'G', 'G-', 'A', 'A-', 'B', 'C', 'C-', 'D', 'D-'];
+  const notes = [
+    { isBlack: false }, // C
+    { isBlack: true },  // C#
+    { isBlack: false }, // D
+    { isBlack: true },  // D#
+    { isBlack: false }, // E
+    { isBlack: false }, // F
+    { isBlack: true },  // F#
+    { isBlack: false }, // G
+    { isBlack: true },  // G#
+    { isBlack: false }, // A
+    { isBlack: true },  // A#
+    { isBlack: false }, // B
+  ];
 
-        for (let octave = 1; octave <= 7; octave++) {
-            for (const note of notes) {
-                const isBlack = note.includes('-');
-                const keyId = `${note}${octave}`;
-                keys.push(<PianoKey key={keyId} id={keyId} isBlack={isBlack} />);
-            }
-        }
-        return keys;
-    };
-
-    return <div className="Piano">{generateKeys()}</div>;
+  return (
+    <div className="piano">
+      {notes.map((note, index) => (
+        <PianoKey key={index} isBlack={note.isBlack} />
+      ))}
+    </div>
+  );
 };
 
 export default Piano;
