@@ -1,32 +1,54 @@
-import mongoose, { Model, Schema } from 'mongoose';
-import bcrypt from 'bcryptjs';
-import { IUser } from '../types/user';
+import { Schema, model, Document } from 'mongoose';
+import bcrypt from 'bcrypt';
+import { ISound } from './Sound';
 
-// Create an interface for the methods
-interface IUserMethods {
-  comparePassword(candidatePassword: string): Promise<boolean>;
+// Define an interface for the User document
+interface IUser extends Document {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  sounds: ISound[];
+  user?: {
+    _id: string;
+  };
+  isCorrectPassword: (password: string) => Promise<boolean>;
+  role?: string;
 }
 
-// Create a type that includes both the document interface and methods
-type UserModel = Model<IUser, {}, IUserMethods>;
-
-const userSchema = new Schema<IUser, UserModel>({
-  email: {
+// Define the schema for the User document
+const userSchema = new Schema<IUser>(
+  {
+  firstName: {
     type: String,
     required: true,
-    unique: true,
     trim: true,
-    lowercase: true
   },
-  password: {
+  lastName: {
     type: String,
-    required: true
+    required: true,
+    trim: true,
+
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      match: [/.+@.+\..+/, 'Must match an email address!'],
+    },
+    password: {
+      type: String,
+      required: true,
+      minlength: 5,
+    },
+    sounds: [{ type: Schema.Types.ObjectId, ref: 'Sound' }]
+  },
+  {
+    timestamps: true,
+    toJSON: { getters: true },
+    toObject: { getters: true },
   }
-});
+);
 
 userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
