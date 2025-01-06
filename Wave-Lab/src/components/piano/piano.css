@@ -7,11 +7,13 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     overflow: hidden;
     margin: 20px auto;
+    max-width: 1400px;
+    
   }
   
   /* White Keys */
   .white-key {
-    width: 40px;
+    width: 35px;
     height: 180px;
     background-color: white;
     border: 1px solid black;
@@ -56,34 +58,60 @@
 
 .controls {
   display: flex;
-  gap: 10px;
+  justify-content: center; /* Center buttons horizontally */
+  align-items: center; /* Center buttons vertically */
+  gap: 20px; /* Space between buttons */
+  margin-top: 20px;
 }
 
+/* General button styles */
 .controls button {
-  padding: 10px 20px;
-  font-size: 16px;
-  font-weight: bold;
+  width: 60px;
+  height: 60px;
   border: none;
-  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease; /* Hover effect */
 }
 
-.controls button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+/* Record Button (Red Circle) */
+.controls .record-btn {
+  background-color: red;
+  border-radius: 50%; /* Make it circular */
 }
 
-.controls button:hover:enabled {
-  transform: scale(1.05);
+.controls .record-btn:hover {
+  transform: scale(1.1); /* Slight zoom on hover */
 }
 
-.controls button:enabled {
-  background-color: #007bff;
+/* Play Button (Green Triangle) */
+.controls .play-btn {
+  background: transparent; /* Transparent background */
+  position: relative;
+  width: 0;
+  height: 0;
+  border-left: 30px solid green; /* Triangle shape */
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+}
+
+.controls .play-btn:hover {
+  transform: scale(1.2); /* Slight zoom on hover */
+}
+
+/* Stop Button */
+.controls .stop-btn {
+  background-color: #333; /* Dark gray for stop button */
+  border-radius: 5px; /* Optional square with rounded corners */
   color: white;
+  font-size: 14px;
+  padding: 0;
 }
 
-.controls button:enabled:nth-child(2) {
-  background-color: #dc3545; /* Red for stop button */
+.controls .stop-btn:hover {
+  background-color: #555; /* Lighter gray on hover */
+  transform: scale(1.1); /* Slight zoom */
 }
   
