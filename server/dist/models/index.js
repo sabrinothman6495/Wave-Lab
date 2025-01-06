@@ -1,2 +1,1 @@
-import User from './User';
-export default { User };
+"use strict";

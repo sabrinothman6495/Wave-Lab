@@ -7,11 +7,12 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     overflow: hidden;
     margin: 20px auto;
+    max-width: 1400px;
   }
   
   /* White Keys */
   .white-key {
-    width: 40px;
+    width: 35px;
     height: 180px;
     background-color: white;
     border: 1px solid black;
@@ -22,7 +23,7 @@
   
   /* Black Keys */
   .black-key {
-    width: 30px;
+    width: 20px;
     height: 120px;
     background-color: black;
     position: relative;
@@ -34,5 +35,23 @@
   }
   
   /* Prevent Gaps */
+.white-key {
+    margin-right: -1px;
+  }
+  
+  /* Prevent Gaps */
+  .black-key {
+    margin-right: -19px;
+}
 
+/* Active Keys */
+.white-key.active {
+  background-color: #ddd;
+  transform: translateY(2px);
+}
+
+.black-key.active {
+  background-color: #444;
+  transform: translateY(2px);
+}
   

@@ -1,5 +1,5 @@
 // Import the user model and signToken function
-import User from '../models/user.js';
+import User from '../models/User.js';
 import { signToken } from '../utils/auth.js';
 export const getUserProfile = (req, res) => {
     const user = req.user; // TypeScript now recognizes the 'user' property
