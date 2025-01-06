@@ -44,7 +44,7 @@ const seedDatabase = async (): Promise<void> => {
     const enrichedSoundData = await Promise.all(
       soundData.map(async (sound) => {
         try {
-          const metadata = await analyzeAudio(sound.url);
+          const metadata = await analyzeAudio(sound.audioUrl);
           return {
             ...sound,
             duration: metadata.duration,
@@ -52,7 +52,7 @@ const seedDatabase = async (): Promise<void> => {
             frequencyData: metadata.frequencyData
           };
         } catch (error) {
-          console.error(`Error analyzing sound ${sound.name}:`, error);
+          console.error(`Error analyzing sound ${sound.title}:`, error);
           return sound; // Fall back to original data if analysis fails
         }
       })
