@@ -1,5 +1,7 @@
-import { Schema, model } from 'mongoose';
-const audioProjectSchema = new Schema({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = require("mongoose");
+const audioProjectSchema = new mongoose_1.Schema({
     userId: { type: String, required: true },
     title: { type: String, required: true },
     audioUrl: { type: String, required: true },
@@ -16,5 +18,5 @@ const audioProjectSchema = new Schema({
     toJSON: { getters: true },
     toObject: { getters: true },
 });
-const AudioProjectModel = model('AudioProject', audioProjectSchema);
-export default AudioProjectModel;
+const AudioProjectModel = (0, mongoose_1.model)('AudioProject', audioProjectSchema);
+exports.default = AudioProjectModel;

@@ -1,5 +1,10 @@
-import mongoose from 'mongoose';
-const { Schema, model } = mongoose;
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = __importDefault(require("mongoose"));
+const { Schema, model } = mongoose_1.default;
 const categorySchema = new Schema({
     name: {
         type: String,
@@ -18,4 +23,4 @@ const categorySchema = new Schema({
     id: false, // Disable the default `id` virtual property
 });
 const Category = model('Category', categorySchema);
-export default Category;
+exports.default = Category;

@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const typeDefs = `
 
   type User {
@@ -53,4 +55,4 @@ const typeDefs = `
     createSound(userId: ID!, title: String!, audioUrl: String!): Sound!
   }
 `;
-export default typeDefs;
+exports.default = typeDefs;

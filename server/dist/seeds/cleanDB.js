@@ -1,10 +1,15 @@
-import Sound from '../models/Sound';
-import User from '../models/user';
-import process from 'process';
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const Sound_1 = __importDefault(require("../models/Sound"));
+const user_1 = __importDefault(require("../models/user"));
+const process_1 = __importDefault(require("process"));
 async function cleanDB() {
-    await Sound.deleteMany({});
-    await User.deleteMany({});
-    process.exit(0);
+    await Sound_1.default.deleteMany({});
+    await user_1.default.deleteMany({});
+    process_1.default.exit(0);
 }
 cleanDB();
-export default cleanDB;
+exports.default = cleanDB;

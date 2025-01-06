@@ -1,12 +1,17 @@
-import express from 'express';
-const router = express.Router();
-import { createUser, login, } from '../../controllers/user-controller.js';
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const router = express_1.default.Router();
+const user_controller_js_1 = require("../../controllers/user-controller.js");
 // import middleware
-import { authenticateToken } from '../../utils/auth.js';
+const auth_js_1 = require("../../utils/auth.js");
 // put authMiddleware anywhere we need to send a token for verification of user
-router.route('/').post(createUser).put(authenticateToken, createUser);
-router.route('/login').post(login);
-router.route('/me').get(authenticateToken, (req, res) => {
+router.route('/').post(user_controller_js_1.createUser).put(auth_js_1.authenticateToken, user_controller_js_1.createUser);
+router.route('/login').post(user_controller_js_1.login);
+router.route('/me').get(auth_js_1.authenticateToken, (req, res) => {
     res.json(req.user);
 });
-export default router;
+exports.default = router;
