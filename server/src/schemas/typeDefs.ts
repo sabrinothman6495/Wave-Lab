@@ -7,20 +7,42 @@ const typeDefs = `
     sounds: [Sound!]!
   }
 
+  type Instrument {
+    id: ID!
+    name: String!
+    type: String!
+    category: String!
+    sound: String!
+  }
+
   type Sound {
     id: ID!
     name: String!
-    fileUrl: String!
-    category: Category!
-    createdAt: String!
-    userId: ID!
-    title: String!
-    audioUrl: String!
+    guitar: String
+    piano: String
+    trumpet: String
+    sliders: Sliders
+  }
+
+  type Sliders {
+    id: ID!
+    name: String!
+    bass: String!
+    treble: String!
+    mid: String!
+    volume: String!
   }
 
   type Category {
     id: ID!
     name: String!
+  }
+
+  type Piano {
+    id: ID!
+    key: String!
+    note: String!
+    position: String!
   }
 
   input UserInput {
@@ -55,4 +77,3 @@ const typeDefs = `
 `;
 
 export default typeDefs;
-
