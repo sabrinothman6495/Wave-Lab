@@ -22,7 +22,7 @@
   
   /* Black Keys */
   .black-key {
-    width: 30px;
+    width: 20px;
     height: 120px;
     background-color: black;
     position: relative;
@@ -34,5 +34,56 @@
   }
   
   /* Prevent Gaps */
+.white-key {
+    margin-right: -1px;
+  }
+  
+  /* Prevent Gaps */
+  .black-key {
+    margin-right: -19px;
+}
 
+/* Active Keys */
+.white-key.active {
+  background-color: #ddd;
+  transform: translateY(2px);
+}
+
+.black-key.active {
+  background-color: #444;
+  transform: translateY(2px);
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+}
+
+.controls button {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.controls button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.controls button:hover:enabled {
+  transform: scale(1.05);
+}
+
+.controls button:enabled {
+  background-color: #007bff;
+  color: white;
+}
+
+.controls button:enabled:nth-child(2) {
+  background-color: #dc3545; /* Red for stop button */
+}
   

@@ -1,27 +1,31 @@
 import React from "react";
+import "./navbar.css";
+import { Link } from "@chakra-ui/react";
 
-interface navBar {
-    profile: string;
-    home: string;
-    landingPage: string;
+interface NavBarProps {
+  profilePage: string;
+  homePage: string;
+  landingPage: string;
 }
 
-const NavBar: React.FC<navBar> = ({ profile, home, landingPage }) => {
-    return (
-        <nav>
-            <ul>
-                <li>
-                    <a href={profile}>Profile</a>
-                </li>
-                <li>
-                    <a href={home}>Home</a>
-                </li>
-                <li>
-                    <a href={landingPage}>Landing Page</a>
-                </li>
-            </ul>
-        </nav>
-    );
+
+
+const NavBar: React.FC<NavBarProps> = ({ profilePage, homePage, landingPage }) => {
+  return (
+    <nav>
+      <ul>
+        <li>
+          <Link href={profilePage}>Profile</Link>
+        </li>
+        <li>
+          <Link href={homePage}>Home</Link>
+        </li>
+        <li>
+          <Link href={landingPage}>Landing Page</Link>
+        </li>
+      </ul>
+    </nav>
+  );
 };
 
 export default NavBar;
