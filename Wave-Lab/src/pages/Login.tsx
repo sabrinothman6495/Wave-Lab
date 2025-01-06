@@ -1,26 +1,50 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./Login.css";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+import { LOGIN_USER } from '../utils/mutations';
+import './Login.css';
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Handles form submission for login
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const [login, { loading }] = useMutation(LOGIN_USER, {
+    onCompleted: (data) => {
+      // Store the token in localStorage
+      localStorage.setItem('auth_token', data.login.token);
+      // Store user data if needed
+      localStorage.setItem('user', JSON.stringify(data.login.user));
+      // Redirect to home page
+      navigate('/homePage');
+    },
+    onError: (error) => {
+      setError(error.message);
+    },
+  });
+
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
 
     // Validate form fields
     if (!email.trim() || !password.trim()) {
-      alert("Please fill out all fields.");
+      setError('Please fill out all fields.');
       return;
     }
 
-    console.log(`Logging in for: ${email}`);
-
-    // Redirect to the home page after successful login
-    navigate("/homePage");
+    try {
+      await login({
+        variables: {
+          email,
+          password,
+        },
+      });
+    } catch (err) {
+      // Error is handled by onError callback
+      console.error('Login error:', err);
+    }
   };
 
   return (
@@ -35,12 +59,14 @@ const Login: React.FC = () => {
       <div className="form-section">
         <h2>Log In</h2>
         <form className="auth-form" onSubmit={handleLoginSubmit}>
+          {error && <div className="error-message">{error}</div>}
           <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            disabled={loading}
           />
           <input
             type="password"
@@ -48,14 +74,18 @@ const Login: React.FC = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            disabled={loading}
           />
-          <button type="submit">Log In</button>
+          <button type="submit" disabled={loading}>
+            {loading ? 'Logging in...' : 'Log In'}
+          </button>
         </form>
         <p className="toggle-text">
-          Don't have an account?{" "}
+          Don't have an account?{' '}
           <button
             className="signup-btn toggle-link"
-            onClick={() => navigate("/signup")}
+            onClick={() => navigate('/signup')}
+            disabled={loading}
           >
             Sign Up
           </button>
@@ -66,4 +96,3 @@ const Login: React.FC = () => {
 };
 
 export default Login;
-
