@@ -5,7 +5,7 @@ import Piano from "../components/piano/piano";
 const HomePage: React.FC = () => {
     return (
         <div>
-            <NavBar profile="/profile" home="/home" landingPage="/" />
+            <NavBar profile="/profile" home="/home" landingPage="/landingPage" />
             <Piano />
         </div>
     );
