@@ -1,0 +1,33 @@
+{
+  "name": "wave-lab",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "start": "concurrently \"npm run start-db\" \"npm run start:client\" ",
+    "start-db": "cd server && npm run start",
+    "start:client": "cd client && npm run build && npm run dev",
+    "install": "cd client && npm i && cd ../server && npm i",
+    "dev": "vite",
+    "seed": "cd server && npm run seed",
+    "render-build": "npm install && npm run seed",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@mui/material": "^6.2.1",
+    "@types/react-router-dom": "^5.3.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "chakra": "^0.0.3",
+    "concurrently": "^9.1.0",
+    "mui": "^0.0.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router": "^7.1.1",
+    "react-router-dom": "^6.28.1",
+    "vite": "^6.0.5"
+  }
+}
