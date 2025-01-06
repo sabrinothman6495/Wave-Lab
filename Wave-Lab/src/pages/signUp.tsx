@@ -8,8 +8,8 @@ const SignUp: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
 
-  // Handles form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  // Handles form submission for signup
+  const handleSignUpSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     // Validate form fields
@@ -24,9 +24,10 @@ const SignUp: React.FC = () => {
     }
 
     console.log(`Creating account for: ${email}`);
-    alert("Account created successfully!");
 
-    navigate("/login"); // Redirect to login after successful sign-up
+    // Redirect to the home page after successful signup
+    alert("Account created successfully!");
+    navigate("/homePage");
   };
 
   return (
@@ -36,7 +37,7 @@ const SignUp: React.FC = () => {
         <p className="tagline">Join Wave Lab and start creating your music!</p>
       </div>
       <div className="form-section">
-        <form className="auth-form" onSubmit={handleSubmit}>
+        <form className="auth-form" onSubmit={handleSignUpSubmit}>
           <input
             type="email"
             placeholder="Email"
@@ -60,15 +61,6 @@ const SignUp: React.FC = () => {
           />
           <button type="submit">Sign Up</button>
         </form>
-        <p className="toggle-text">
-          Already have an account?{" "}
-          <button
-            className="login-btn toggle-link"
-            onClick={() => navigate("/login")}
-          >
-            Log In
-          </button>
-        </p>
       </div>
     </div>
   );

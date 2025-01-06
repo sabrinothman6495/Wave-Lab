@@ -18,12 +18,9 @@ const Login: React.FC = () => {
     }
 
     console.log(`Logging in for: ${email}`);
-    navigate("/homePage"); // Redirect to the home page
-  };
 
-  // Navigate to the Sign Up page
-  const handleSignUpClick = () => {
-    navigate("/signup");
+    // Redirect to the home page after successful login
+    navigate("/homePage");
   };
 
   return (
@@ -56,7 +53,10 @@ const Login: React.FC = () => {
         </form>
         <p className="toggle-text">
           Don't have an account?{" "}
-          <button className="signup-btn toggle-link" onClick={handleSignUpClick}>
+          <button
+            className="signup-btn toggle-link"
+            onClick={() => navigate("/signup")}
+          >
             Sign Up
           </button>
         </p>
@@ -66,3 +66,4 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+
