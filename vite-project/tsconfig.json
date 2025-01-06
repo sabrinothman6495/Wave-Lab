@@ -1,8 +1,0 @@
-{
-  "compilerOptions": {
-    "plugins": ["@vitejs/plugin-react"]
-  },
-  "server": {
-    "port": 5173
-  }
-}
