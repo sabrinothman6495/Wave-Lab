@@ -1,59 +1,49 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./Login.css";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+import { LOGIN_USER } from '../utils/mutations';
+import './Login.css';
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false); // Loading state
-  const [error, setError] = useState<string | null>(null); // Error state
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Handle form submission for login
+  const [login, { loading }] = useMutation(LOGIN_USER, {
+    onCompleted: (data) => {
+      // Store the token in localStorage
+      localStorage.setItem('auth_token', data.login.token);
+      // Store user data if needed
+      localStorage.setItem('user', JSON.stringify(data.login.user));
+      // Redirect to home page
+      navigate('/homePage');
+    },
+    onError: (error) => {
+      setError(error.message);
+    },
+  });
+
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Reset error state before new attempt
-    setError(null);
+    setError('');
 
     // Validate form fields
     if (!email.trim() || !password.trim()) {
-      setError("Please fill out all fields.");
+      setError('Please fill out all fields.');
       return;
     }
 
-    console.log(`Logging in for: ${email}`);
-
-    setLoading(true); // Start loading
-
     try {
-      // Make a POST request to the backend for login
-      const response = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      await login({
+        variables: {
           email,
           password,
-        }),
+        },
       });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // Store the token (you can store it in localStorage or cookies)
-        localStorage.setItem("token", data.token);
-        // Redirect to the home page after successful login
-        navigate("/homePage");
-      } else {
-        setError(data.message || "Login failed. Please try again."); // Show error message
-      }
     } catch (err) {
-      console.error("Error logging in:", err);
-      setError("An error occurred. Please try again.");
-    } finally {
-      setLoading(false); // End loading
+      // Error is handled by onError callback
+      console.error('Login error:', err);
     }
   };
 
@@ -73,12 +63,14 @@ const Login: React.FC = () => {
         {error && <p className="error-message">{error}</p>}
 
         <form className="auth-form" onSubmit={handleLoginSubmit}>
+          {error && <div className="error-message">{error}</div>}
           <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            disabled={loading}
           />
           <input
             type="password"
@@ -86,17 +78,19 @@ const Login: React.FC = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            disabled={loading}
           />
           <button type="submit" disabled={loading}>
-            {loading ? "Logging in..." : "Log In"}
+            {loading ? 'Logging in...' : 'Log In'}
           </button>
         </form>
 
         <p className="toggle-text">
-          Don't have an account?{" "}
+          Don't have an account?{' '}
           <button
             className="signup-btn toggle-link"
-            onClick={() => navigate("/signup")}
+            onClick={() => navigate('/signup')}
+            disabled={loading}
           >
             Sign Up
           </button>
