@@ -1,0 +1,43 @@
+/* Navigation Bar Container */
+nav {
+    background-color: #333; /* Dark background for the nav bar */
+    color: white; /* White text color */
+    padding: 10px 20px; /* Padding for spacing */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  }
+  
+  /* Navigation List */
+  nav ul {
+    display: flex; /* Horizontal layout for list items */
+    list-style: none; /* Remove bullets from list */
+    margin: 0;
+    padding: 0;
+    justify-content: center; /* Center-align the nav items */
+    gap: 20px; /* Space between list items */
+  }
+  
+  /* Navigation Links */
+  nav ul li a {
+    text-decoration: none; /* Remove underline */
+    color: white; /* White text color */
+    font-size: 16px;
+    font-weight: bold;
+    padding: 8px 12px; /* Add padding for clickable area */
+    border-radius: 4px; /* Rounded corners for links */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover effect */
+  }
+  
+  /* Hover Effect */
+  nav ul li a:hover {
+    background-color: #555; /* Slightly lighter background on hover */
+    color: #ddd; /* Light gray text on hover */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    nav ul {
+      flex-direction: column; /* Stack items vertically on smaller screens */
+      gap: 10px; /* Adjust spacing for smaller screens */
+    }
+  }
+  
