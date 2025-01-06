@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import "./SignUp.css";
 
 const SignUp: React.FC = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -13,6 +15,11 @@ const SignUp: React.FC = () => {
     e.preventDefault();
 
     // Validate form fields
+    if (!firstName.trim() || !lastName.trim()) {
+      alert("Please fill out all fields.");
+      return;
+    }
+
     if (!email.trim() || !password.trim() || !confirmPassword.trim()) {
       alert("Please fill out all fields.");
       return;
@@ -38,6 +45,20 @@ const SignUp: React.FC = () => {
       </div>
       <div className="form-section">
         <form className="auth-form" onSubmit={handleSignUpSubmit}>
+          <input
+            type="text"
+            placeholder="First Name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Last Name"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            required
+          />
           <input
             type="email"
             placeholder="Email"

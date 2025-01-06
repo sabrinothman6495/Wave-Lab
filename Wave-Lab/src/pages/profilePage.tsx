@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   Box,
   Button,
-  Image,
   Text,
   Heading,
   VStack,
@@ -10,9 +9,19 @@ import {
 } from "@chakra-ui/react";
 import NavBar from "../components/navbar/navbar";
 import Title from "../components/navbar/title";
+import { Avatar } from "../components/ui/avatar"
+
+
+// Color palette for avatars
+const colorPalette = ["red", "blue", "green", "yellow", "purple", "orange"];
+const pickPalette = (name: string) => {
+  const index = name.charCodeAt(0) % colorPalette.length;
+  return colorPalette[index];
+};
 
 interface UserProfile {
-  username: string;
+  firstName?: string;
+  lastName?: string;
   profilePic: string; // URL of the profile picture
   email: string;
   password: string; // New password field
@@ -20,54 +29,39 @@ interface UserProfile {
 }
 
 const Profile: React.FC = () => {
-  // Example user data
   const [userProfile, setUserProfile] = useState<UserProfile>({
-    profilePic: "https://via.placeholder.com/150",
-    username: "JohnDoe",
+    profilePic: "", // Placeholder for avatar
+    firstName: "Joe",
+    lastName: "Kerr",
     email: "johndoe@gmail.com",
-    password: "password123", // Dummy password for example
-    sounds: ["sound1.mp3", "sound2.mp3", "sound3.mp3"], // Saved sounds
+    password: "password123",
+    sounds: ["sound1.mp3", "sound2.mp3", "sound3.mp3"],
   });
 
-  // State for editing mode
   const [isEditing, setIsEditing] = useState(false);
-
-  // Temporary state for editing fields
-  const [tempUsername, setTempUsername] = useState(userProfile.username);
+  const [tempFirstName, setTempFirstName] = useState(userProfile.firstName);
+  const [tempLastName, setTempLastName] = useState(userProfile.lastName);
   const [tempEmail, setTempEmail] = useState(userProfile.email);
   const [tempPassword, setTempPassword] = useState(userProfile.password);
-  const [tempProfilePic, setTempProfilePic] = useState(userProfile.profilePic);
-
-  // Handle Profile Picture Upload
-  const handleProfilePicUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        setTempProfilePic(reader.result as string); // Temporarily set the profile pic
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   // Save Changes
   const handleSave = () => {
     setUserProfile((prev) => ({
       ...prev,
-      username: tempUsername,
+      firstName: tempFirstName,
+      lastName: tempLastName,
       email: tempEmail,
       password: tempPassword,
-      profilePic: tempProfilePic,
     }));
     setIsEditing(false);
   };
 
   // Cancel Changes
   const handleCancel = () => {
-    setTempUsername(userProfile.username);
+    setTempFirstName(userProfile.firstName);
+    setTempLastName(userProfile.lastName);
     setTempEmail(userProfile.email);
     setTempPassword(userProfile.password);
-    setTempProfilePic(userProfile.profilePic);
     setIsEditing(false);
   };
 
@@ -87,27 +81,25 @@ const Profile: React.FC = () => {
       >
         <VStack gap={4}>
           {/* Profile Picture */}
-          <Image
-            borderRadius="full"
-            boxSize="120px"
-            src={tempProfilePic}
-            alt={`${userProfile.username}'s profile`}
+          <Avatar
+            name={`${userProfile.firstName} ${userProfile.lastName}`}
+            colorPalette={pickPalette(
+              `${userProfile.firstName || ""} ${userProfile.lastName || ""}`
+            )}
           />
-          {isEditing && (
-            <Input
-              type="file"
-              accept="image/*"
-              onChange={handleProfilePicUpload}
-            />
-          )}
 
-          {/* User Info */}
+          {/* Editable Fields */}
           {isEditing ? (
             <>
               <Input
-                value={tempUsername}
-                onChange={(e) => setTempUsername(e.target.value)}
-                placeholder="Enter username"
+                value={tempFirstName}
+                onChange={(e) => setTempFirstName(e.target.value)}
+                placeholder="Enter First Name"
+              />
+              <Input
+                value={tempLastName}
+                onChange={(e) => setTempLastName(e.target.value)}
+                placeholder="Enter Last Name"
               />
               <Input
                 value={tempEmail}
@@ -123,11 +115,15 @@ const Profile: React.FC = () => {
             </>
           ) : (
             <>
-              <Heading size="lg">{userProfile.username}</Heading>
+              <Heading size="lg">
+                {userProfile.firstName} {userProfile.lastName}
+              </Heading>
               <Text fontSize="md" color="gray.600">
                 Email: {userProfile.email}
               </Text>
-              <Text fontSize="md" color="gray.600">Sounds:</Text>
+              <Text fontSize="md" color="gray.600">
+                Sounds:
+              </Text>
               <VStack align="start">
                 {userProfile.sounds.map((sound, index) => (
                   <Text key={index} fontSize="md" color="gray.600">

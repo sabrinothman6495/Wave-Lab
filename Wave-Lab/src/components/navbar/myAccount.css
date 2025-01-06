@@ -1,0 +1,39 @@
+.my-account-container {
+    display: flex;
+    justify-content: flex-end; /* Aligns the button to the right */
+    align-items: center; /* Center vertically */
+    width: 100%; /* Full width */
+    height: auto; /* Adjust height as needed */
+    padding: 10px 20px; /* Add spacing around the container */
+    margin-bottom: 10px; /* Ensure spacing below the title */
+    background-color: #f8f9fa; /* Optional background for better visibility */
+    margin-left: 570px;
+  }
+  
+  .my-account-container button {
+    background-color: lightgray; /* Light gray background */
+    color: black; /* Black text */
+    border: none; /* Remove border */
+    padding: 10px 20px; /* Button padding */
+    border-radius: 25px; /* Fully rounded corners */
+    cursor: pointer; /* Pointer cursor for interactivity */
+    font-size: 16px; /* Adjust font size */
+    font-weight: bold; /* Bold text for better visibility */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+    transition: all 0.3s ease-in-out; /* Smooth transitions for hover effect */
+  }
+  
+  /* Hover effect for the button */
+  .my-account-container button:hover {
+    background-color: gray; /* Darker gray on hover */
+    color: white; /* White text on hover */
+    transform: translateY(-2px); /* Slight upward movement on hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+  }
+  
+  /* Focus effect for accessibility */
+  .my-account-container button:focus {
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Add focus ring for accessibility */
+  }
+  
