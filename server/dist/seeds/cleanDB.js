@@ -1,5 +1,5 @@
 import Sound from '../models/Sound';
-import User from '../models/User';
+import User from '../models/user';
 import process from 'process';
 async function cleanDB() {
     await Sound.deleteMany({});
