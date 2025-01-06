@@ -1,20 +1,60 @@
 import React from 'react';
-import { Box, Button, Image, Text, Heading, VStack } from '@chakra-ui/react';
+import { useQuery, useMutation } from '@apollo/client';
+import { 
+  Box, 
+  Button, 
+  Image, 
+  Text, 
+  Heading, 
+  VStack
+} from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/toast';
+import { GET_USER_PROFILE, UPDATE_PROFILE } from '../graphql/queries';
 
-interface UserProfile {
-  username: string;
-  profilePic: string; // URL of the profile picture
-  email: string;
-  sounds: string; // Lowercase for consistency
-}
 
 const Profile: React.FC = () => {
-  // Example user data
-  const userProfile: UserProfile = {
-    profilePic: 'https://via.placeholder.com/150',
-    username: 'JohnDoe',
-    email: 'johndoe@gmail.com',
-    sounds: 'sound1, sound2, sound3',
+  const toast = useToast();
+  const { loading, error, data } = useQuery(GET_USER_PROFILE);
+  const [updateProfile] = useMutation(UPDATE_PROFILE);
+
+  // Show loading state
+  if (loading) return (
+    <Box textAlign="center" mt="8">
+      Loading profile...
+    </Box>
+  );
+
+  // Show error state
+  if (error) return (
+    <Box textAlign="center" mt="8" color="red.500">
+      Error loading profile: {error.message}
+    </Box>
+  );
+
+  const userProfile = data?.me;
+
+  const handleEditProfile = async () => {
+    try {
+      await updateProfile({
+        variables: {
+          username: userProfile.username,
+          email: userProfile.email,
+        },
+      });
+      toast({
+        title: "Profile updated.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (err) {
+      toast({
+        title: "Error updating profile.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
@@ -33,7 +73,7 @@ const Profile: React.FC = () => {
         <Image
           borderRadius="full"
           boxSize="120px"
-          src={userProfile.profilePic}
+          src="https://via.placeholder.com/150"
           alt={`${userProfile.username}'s profile`}
         />
 
@@ -43,14 +83,29 @@ const Profile: React.FC = () => {
           Email: {userProfile.email}
         </Text>
         <Text fontSize="md" color="gray.600">
-          Sounds: {userProfile.sounds}
+          Sounds: {userProfile.Sound?.length || 0} uploaded
         </Text>
 
+        {/* Display Sound titles if any */}
+        {userProfile.Sound?.length > 0 && (
+            <VStack align="start" w="100%">
+            <Text fontWeight="bold">Your Sounds:</Text>
+            {userProfile.Sound.map((sound: { _id: string; title: string }) => (
+              <Text key={sound._id}>{sound.title}</Text>
+            ))}
+            </VStack>
+        )}
+
         {/* Buttons */}
-        <Button colorScheme="red" size="md" >
+        <Button colorScheme="red" size="md">
           Enter Email
         </Button>
-        <Button colorScheme="blue" size="sm" mt="2">
+        <Button 
+          colorScheme="blue" 
+          size="sm" 
+          mt="2"
+          onClick={handleEditProfile}
+        >
           Edit Profile
         </Button>
       </VStack>
