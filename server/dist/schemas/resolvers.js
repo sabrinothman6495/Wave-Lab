@@ -1,4 +1,4 @@
-import User from '../models/user.js';
+import User from '../models/User.js';
 import Sound from '../models/Sound.js';
 import Category from '../models/Category.js';
 import { signToken } from '../utils/auth.js';
