@@ -3,14 +3,14 @@ const SoundSchema = new Schema({
     userId: {
         type: String,
         required: true,
-        ref: 'User' // This allows you to populate user data if needed
+        ref: 'User'
     },
     title: {
         type: String,
         required: true
     },
-    audioUrl: {
-        type: String,
+    audioData: {
+        type: String, // Will store Base64 encoded audio data
         required: true
     },
     instrument: {
@@ -27,7 +27,6 @@ const SoundSchema = new Schema({
             default: false
         }
     },
-    // Audio metadata fields
     duration: {
         type: Number
     },
@@ -38,5 +37,7 @@ const SoundSchema = new Schema({
             type: Number
         }]
 }, { timestamps: true });
+// Add index for faster queries
+SoundSchema.index({ userId: 1, createdAt: -1 });
 const Sound = mongoose.model('Sound', SoundSchema);
 export default Sound;
