@@ -1,54 +1,43 @@
-import { Schema, model, Document } from 'mongoose';
-import bcrypt from 'bcrypt';
-import { ISound } from './Sound';
+// models/user.ts
+import mongoose, { Model } from 'mongoose';
+import bcrypt from 'bcryptjs';
+import { IUser, IUserMethods, UserDocument } from '../types/user';
 
-// Define an interface for the User document
-interface IUser extends Document {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  sounds: ISound[];
-  user?: {
-    _id: string;
-  };
-  isCorrectPassword: (password: string) => Promise<boolean>;
-  role?: string;
-}
+type UserModel = Model<IUser, {}, IUserMethods>;
 
-// Define the schema for the User document
-const userSchema = new Schema<IUser>(
-  {
+const userSchema = new mongoose.Schema<IUser, UserModel>({
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
   firstName: {
     type: String,
     required: true,
-    trim: true,
+    trim: true
   },
   lastName: {
     type: String,
     required: true,
-    trim: true,
-
+    trim: true
   },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      match: [/.+@.+\..+/, 'Must match an email address!'],
-    },
-    password: {
-      type: String,
-      required: true,
-      minlength: 5,
-    },
-    sounds: [{ type: Schema.Types.ObjectId, ref: 'Sound' }]
+  role: {
+    type: String,
+    required: true,
+    default: 'user',
+    enum: ['user', 'admin'] // adjust these roles as needed
   },
-  {
-    timestamps: true,
-    toJSON: { getters: true },
-    toObject: { getters: true },
+  createdAt: {
+    type: Date,
+    default: Date.now
   }
-);
+});
 
 userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
@@ -60,4 +49,6 @@ userSchema.methods.comparePassword = async function(candidatePassword: string): 
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
-export const User = mongoose.model<IUser, UserModel>('User', userSchema);
+const User = mongoose.model<IUser, UserModel>('User', userSchema);
+
+export default User;

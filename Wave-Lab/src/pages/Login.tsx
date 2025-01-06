@@ -1,45 +1,54 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
+import { authApi } from '../services/api';
 import './Login.css';
 
 const Login: React.FC = () => {
-  const [isLogin, setIsLogin] = useState(true); 
-  const [email, setEmail] = useState(''); 
-  const [password, setPassword] = useState(''); 
-  const navigate = useNavigate(); 
+  const [isLogin, setIsLogin] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
- 
   const toggleForm = () => {
     setIsLogin(!isLogin);
+    setError('');
   };
 
-  // Handles form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+    setIsLoading(true);
 
-    // Validate form fields
-    if (!email.trim() || !password.trim()) {
-      alert('Please fill out all fields.');
-      return;
+    try {
+      if (!email.trim() || !password.trim()) {
+        throw new Error('Please fill out all fields.');
+      }
+
+      const response = isLogin
+        ? await authApi.login({ email, password })
+        : await authApi.register({ email, password });
+
+      localStorage.setItem('token', response.token);
+      navigate('/homePage');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+    } finally {
+      setIsLoading(false);
     }
-
-    console.log(`${isLogin ? 'Logging in' : 'Creating account'} for: ${email}`);
-
-  
-    navigate('/homePage'); 
   };
 
   return (
     <div className="login-container">
-      {/* Hero Section */}
       <div className="hero-section">
         <h1 className="title">Welcome to WaveLab</h1>
         <p className="tagline">Explore, create, and share your soundboards.</p>
       </div>
 
-      {/* Form Section */}
       <div className="form-section">
         <h2>{isLogin ? 'Log In' : 'Create Account'}</h2>
+        {error && <div className="error-message">{error}</div>}
         <form className="auth-form" onSubmit={handleSubmit}>
           <input
             type="email"
@@ -47,6 +56,7 @@ const Login: React.FC = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            disabled={isLoading}
           />
           <input
             type="password"
@@ -54,8 +64,11 @@ const Login: React.FC = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            disabled={isLoading}
           />
-          <button type="submit">{isLogin ? 'Log In' : 'Sign Up'}</button>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? 'Loading...' : isLogin ? 'Log In' : 'Sign Up'}
+          </button>
         </form>
         <p className="toggle-text">
           {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}

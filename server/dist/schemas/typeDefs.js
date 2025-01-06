@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const typeDefs = `
   scalar Date
 
@@ -67,4 +69,4 @@ const typeDefs = `
     trumpet: Boolean!
   }
 `;
-export default typeDefs;
+exports.default = typeDefs;

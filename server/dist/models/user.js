@@ -1,44 +1,36 @@
-import { Schema, model } from 'mongoose';
-import bcrypt from 'bcrypt';
-// Define the schema for the User document
-const userSchema = new Schema({
-    username: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true,
-    },
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+// models/user.ts
+const mongoose_1 = __importDefault(require("mongoose"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const userSchema = new mongoose_1.default.Schema({
     email: {
         type: String,
         required: true,
         unique: true,
-        match: [/.+@.+\..+/, 'Must match an email address!'],
+        trim: true,
+        lowercase: true
     },
     password: {
         type: String,
-        required: true,
-        minlength: 5,
+        required: true
     },
-    Sound: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'sound',
-        },
-    ],
-}, {
-    timestamps: true,
-    toJSON: { getters: true },
-    toObject: { getters: true },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
 });
 userSchema.pre('save', async function (next) {
-    if (this.isNew || this.isModified('password')) {
-        const saltRounds = 10;
-        this.password = await bcrypt.hash(this.password, saltRounds);
-    }
+    if (!this.isModified('password'))
+        return next();
+    this.password = await bcryptjs_1.default.hash(this.password, 10);
     next();
 });
-userSchema.methods.isCorrectPassword = async function (password) {
-    return bcrypt.compare(password, this.password);
+userSchema.methods.comparePassword = async function (candidatePassword) {
+    return await bcryptjs_1.default.compare(candidatePassword, this.password);
 };
-const User = model('User', userSchema);
-export default User;
+const User = mongoose_1.default.model('User', userSchema);
+exports.default = User; // Changed to default export
