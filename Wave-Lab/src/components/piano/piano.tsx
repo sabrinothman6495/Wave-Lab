@@ -153,6 +153,32 @@ const playback = () => {
 
 return (
   <div className="piano-container">
+    {/* Recording Controls */}
+   <div className="controls">
+  {/* Record Button */}
+  <button
+    className="record-btn"
+    onClick={() => startRecording()}
+    disabled={isRecording}
+  >
+  </button>
+
+  {/* Stop Button */}
+  <button
+    className="stop-btn"
+    onClick={() => stopRecording()}
+    disabled={!isRecording}
+  >
+  </button>
+
+  {/* Play Button */}
+  <button
+    className="play-btn"
+    onClick={() => playback()}
+    disabled={recordedNotes.length === 0}
+  >
+  </button>
+</div>
     {/* Piano Keys */}
     <div className="piano">
       {notes.map((note, index) => (
@@ -163,19 +189,6 @@ return (
           onClick={playNote}
         />
       ))}
-    </div>
-
-    {/* Controls */}
-    <div className="controls">
-      <button onClick={startRecording} disabled={isRecording}>
-        Start Recording
-      </button>
-      <button onClick={stopRecording} disabled={!isRecording}>
-        Stop Recording
-      </button>
-      <button onClick={playback} disabled={recordedNotes.length === 0}>
-        Playback
-      </button>
     </div>
   </div>
 );
