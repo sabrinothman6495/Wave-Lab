@@ -1,5 +1,5 @@
 import db from '../config/connection.js';
-import User from '../models/User.js';
+import User from '../models/user.js';
 import Sound from '../models/Sound.js';
 import cleanDB from './cleanDB.js';
 import soundData from './soundData.json' assert { type: 'json'};
