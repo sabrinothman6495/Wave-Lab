@@ -2,14 +2,10 @@ import { Schema, model } from 'mongoose';
 import bcrypt from 'bcrypt';
 // Define the schema for the User document
 const userSchema = new Schema({
-    firstName: {
+    username: {
         type: String,
         required: true,
-        trim: true,
-    },
-    lastName: {
-        type: String,
-        required: true,
+        unique: true,
         trim: true,
     },
     email: {
@@ -23,7 +19,12 @@ const userSchema = new Schema({
         required: true,
         minlength: 5,
     },
-    sounds: [{ type: Schema.Types.ObjectId, ref: 'Sound' }]
+    Sound: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'sound',
+        },
+    ],
 }, {
     timestamps: true,
     toJSON: { getters: true },
