@@ -4,12 +4,13 @@ import Category from '../models/Category.js';
 import { signToken } from '../utils/auth.js';
 import { AuthenticationError } from 'apollo-server-express';
 
-// Type definitions
 interface AddUserArgs {
   input: {
-    username: string;
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
+    id: string;
   };
 }
 
@@ -24,19 +25,46 @@ interface Context {
   };
 }
 
+interface GetSoundArgs {
+  id: string;
+}
+
+interface AddSoundArgs {
+  name: string;
+  fileUrl: string;
+  category: string;
+}
+
+interface DeleteSoundArgs {
+  id: string;
+}
+
+interface AddCategoryArgs {
+  name: string;
+}
+
+interface DeleteCategoryArgs {
+  id: string;
+}
+
+interface CreateSoundArgs {
+  userId: string;
+  title: string;
+  audioUrl: string;
+}
+
 const resolvers = {
   Query: {
-    users: async () => User.find().populate('sounds'),
-    user: async (_parent: any, { username }: { username: string }) =>
-      User.findOne({ username }).populate('sounds'),
-    getSounds: async () => Sound.find().populate('category'),
-    getSound: async (_parent: any, { id }: { id: string }) => {
+    users: async (): Promise<InstanceType<typeof User>[]> => User.find().populate('sounds'),
+    user: async (_parent: unknown, { email }: { email: string }) => User.findOne({ email }).populate('sounds'),
+    getSounds: async (): Promise<InstanceType<typeof Sound>[]> => Sound.find().populate('category'),
+    getSound: async (_parent: unknown, { id }: GetSoundArgs) => {
       const sound = await Sound.findById(id).populate('category');
       if (!sound) throw new Error(`Sound with ID ${id} not found.`);
       return sound;
     },
-    getCategories: async () => Category.find(),
-    me: async (_parent: any, _args: any, context: Context) => {
+    getCategories: async (): Promise<typeof Category[]> => Category.find(),
+    me: async (_parent: unknown, _args: unknown, context: Context) => {
       if (context.user) {
         return User.findById(context.user._id).populate('sounds');
       }
@@ -44,41 +72,38 @@ const resolvers = {
     },
   },
   Mutation: {
-    addUser: async (_parent: any, { input }: AddUserArgs) => {
+    addUser: async (_parent: unknown, { input }: AddUserArgs) => {
       const user = await User.create(input);
-      const token = signToken(user.email, user.username, user._id);
+      const token = signToken(user.email, `${user.firstName} ${user.lastName}`, user._id as unknown as string, user.role);
       return { token, user };
     },
-    login: async (_parent: any, { email, password }: LoginUserArgs) => {
+    login: async (_parent: unknown, { email, password }: LoginUserArgs) => {
       const user = await User.findOne({ email });
       if (!user) throw new AuthenticationError('Invalid credentials');
       const validPassword = await user.isCorrectPassword(password);
       if (!validPassword) throw new AuthenticationError('Invalid credentials');
-      const token = signToken(user.email, user.username, user._id);
+      const token = signToken(user.email, `${user.firstName} ${user.lastName}`, user._id as unknown as string, user.role);
       return { token, user };
     },
-    addSound: async (_parent: any, { name, fileUrl, category }: { name: string; fileUrl: string; category: string }) => {
+    addSound: async (_parent: unknown, { name, fileUrl, category }: AddSoundArgs) => {
       const sound = await Sound.create({ name, fileUrl, category });
       return sound.populate('category');
     },
-    deleteSound: async (_parent: any, { id }: { id: string }, context: Context) => {
+    deleteSound: async (_parent: unknown, { id }: DeleteSoundArgs, context: Context) => {
       if (!context.user) throw new AuthenticationError('Unauthorized');
       const sound = await Sound.findByIdAndDelete(id);
       if (!sound) throw new Error(`Sound with ID ${id} not found.`);
       return Boolean(sound);
     },
-    addCategory: async (_parent: any, { name }: { name: string }) => {
+    addCategory: async (_parent: unknown, { name }: AddCategoryArgs) => {
       return Category.create({ name });
     },
-    deleteCategory: async (_parent: any, { id }: { id: string }) => {
+    deleteCategory: async (_parent: unknown, { id }: DeleteCategoryArgs) => {
       const category = await Category.findByIdAndDelete(id);
       if (!category) throw new Error(`Category with ID ${id} not found.`);
       return Boolean(category);
     },
-    createSound: async (
-      _parent: any,
-      { userId, title, audioUrl }: { userId: string; title: string; audioUrl: string }
-    ) => {
+    createSound: async (_parent: unknown, { userId, title, audioUrl }: CreateSoundArgs) => {
       const sound = await Sound.create({ userId, title, audioUrl });
       return sound.populate('userId');
     },

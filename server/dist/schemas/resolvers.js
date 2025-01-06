@@ -6,7 +6,7 @@ import { AuthenticationError } from 'apollo-server-express';
 const resolvers = {
     Query: {
         users: async () => User.find().populate('sounds'),
-        user: async (_parent, { username }) => User.findOne({ username }).populate('sounds'),
+        user: async (_parent, { email }) => User.findOne({ email }).populate('sounds'),
         getSounds: async () => Sound.find().populate('category'),
         getSound: async (_parent, { id }) => {
             const sound = await Sound.findById(id).populate('category');
@@ -25,7 +25,7 @@ const resolvers = {
     Mutation: {
         addUser: async (_parent, { input }) => {
             const user = await User.create(input);
-            const token = signToken(user.email, user.username, user._id);
+            const token = signToken(user.email, `${user.firstName} ${user.lastName}`, user._id, user.role);
             return { token, user };
         },
         login: async (_parent, { email, password }) => {
@@ -35,7 +35,7 @@ const resolvers = {
             const validPassword = await user.isCorrectPassword(password);
             if (!validPassword)
                 throw new AuthenticationError('Invalid credentials');
-            const token = signToken(user.email, user.username, user._id);
+            const token = signToken(user.email, `${user.firstName} ${user.lastName}`, user._id, user.role);
             return { token, user };
         },
         addSound: async (_parent, { name, fileUrl, category }) => {
