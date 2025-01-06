@@ -2,7 +2,6 @@ import { Schema, model, Document } from 'mongoose';
 import bcrypt from 'bcrypt';
 import { ISound } from './Sound';
 
-// Define an interface for the User document
 interface IUser extends Document {
   firstName: string;
   lastName: string;
@@ -16,7 +15,6 @@ interface IUser extends Document {
   role?: string;
 }
 
-// Define the schema for the User document
 const userSchema = new Schema<IUser>(
   {
   firstName: {

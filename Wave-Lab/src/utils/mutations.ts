@@ -35,13 +35,14 @@ export const CREATE_SOUND = gql`
       guitar
       trumpet
       postedBy {
-        user
+        firstName
+        lastName
         profilePic
-
       }
     }
   }
 `;
+
 
 export const DELETE_SOUND = gql`
   mutation DeleteSound($id: ID!) {
