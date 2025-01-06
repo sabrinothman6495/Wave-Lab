@@ -1,9 +1,8 @@
 const typeDefs = `
-  "A user account in the system"
+
   type User {
     _id: ID!
-    firstName: String!
-    lastName: String!
+    username: String!
     email: String!
     sounds: [Sound!]!
     createdAt: String!
@@ -12,7 +11,11 @@ const typeDefs = `
 
   "A sound recording with its associated metadata"
   type Sound {
-    _id: ID!
+    id: ID!
+    name: String!
+    fileUrl: String!
+    category: Category!
+    createdAt: String!
     userId: ID!
     title: String!
     audioData: String!  # Base64 encoded audio data
@@ -24,29 +27,13 @@ const typeDefs = `
     updatedAt: String!
   }
 
-  "Instrument configuration for a sound recording"
-  type Instrument {
-    piano: Boolean!
-    guitar: Boolean!
-    trumpet: Boolean!
-  }
-
   "Input for creating a new user"
   input UserInput {
-    firstName: String!
-    lastName: String!
+    username: String!
     email: String!
     password: String!
   }
-
-  "Input for sound instrument configuration"
-  input InstrumentInput {
-    piano: Boolean!
-    guitar: Boolean!
-    trumpet: Boolean!
-  }
-
-  "Authentication response containing token and user data"
+  
   type Auth {
     token: String!
     user: User!
@@ -55,17 +42,10 @@ const typeDefs = `
   type Query {
     "Get all users (admin only)"
     users: [User!]!
-
-    "Get a user by email"
-    user(email: String!): User
-
-    "Get all sounds for the logged-in user"
+    user(username: String!): User
     getSounds: [Sound!]!
-
-    "Get a specific sound by ID"
-    getSound(_id: ID!): Sound
-
-    "Get the currently logged-in user's profile"
+    getSound(id: ID!): Sound
+    getCategories: [Category!]!
     me: User
   }
 
@@ -75,25 +55,11 @@ const typeDefs = `
 
     "Log in to an existing account"
     login(email: String!, password: String!): Auth
-
-    "Create a new sound recording"
-    createSound(
-      title: String!
-      audioData: String!
-      instrument: InstrumentInput!
-      duration: Float
-      waveformData: [Float]
-      frequencyData: [Float]
-    ): Sound!
-
-    "Delete a sound recording"
-    deleteSound(_id: ID!): Boolean!
-
-    "Update user profile information"
-    updateUserProfile(
-      firstName: String
-      lastName: String
-    ): User!
+    addSound(name: String!, fileUrl: String!, category: ID!): Sound!
+    deleteSound(id: ID!): Boolean!
+    addCategory(name: String!): Category!
+    deleteCategory(id: ID!): Boolean!
+    createSound(userId: ID!, title: String!, audioUrl: String!): Sound!
   }
 `;
 export default typeDefs;
