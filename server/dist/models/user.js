@@ -1,36 +1,44 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-// models/user.ts
-const mongoose_1 = __importDefault(require("mongoose"));
-const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const userSchema = new mongoose_1.default.Schema({
-    email: {
+import { Schema, model } from 'mongoose';
+import bcrypt from 'bcrypt';
+// Define the schema for the User document
+const userSchema = new Schema({
+    username: {
         type: String,
         required: true,
         unique: true,
         trim: true,
-        lowercase: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        match: [/.+@.+\..+/, 'Must match an email address!'],
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        minlength: 5,
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
+    Sound: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'sound',
+        },
+    ],
+}, {
+    timestamps: true,
+    toJSON: { getters: true },
+    toObject: { getters: true },
 });
 userSchema.pre('save', async function (next) {
-    if (!this.isModified('password'))
-        return next();
-    this.password = await bcryptjs_1.default.hash(this.password, 10);
+    if (this.isNew || this.isModified('password')) {
+        const saltRounds = 10;
+        this.password = await bcrypt.hash(this.password, saltRounds);
+    }
     next();
 });
-userSchema.methods.comparePassword = async function (candidatePassword) {
-    return await bcryptjs_1.default.compare(candidatePassword, this.password);
+userSchema.methods.isCorrectPassword = async function (password) {
+    return bcrypt.compare(password, this.password);
 };
-const User = mongoose_1.default.model('User', userSchema);
-exports.default = User; // Changed to default export
+const User = model('User', userSchema);
+export default User;
