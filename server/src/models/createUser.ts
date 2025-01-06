@@ -3,7 +3,9 @@ import User from './user.js';
 const createUser = async () => {
   try {
     const user = new User({
-      username: 'exampleUser',
+      firstName: 'John',
+
+      lastName: 'Doe',
       email: 'user@example.com',
       password: 'securepassword123',
     });
