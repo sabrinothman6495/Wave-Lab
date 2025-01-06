@@ -2,21 +2,23 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
-import { useAuth } from '../context/AuthContext';
-import type { AuthResponse } from '../utils/types';
 import './Login.css';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { login: authLogin } = useAuth();
 
-  const [loginMutation, { loading }] = useMutation<{ login: AuthResponse }>(LOGIN_USER, {
+  const [login, { loading }] = useMutation(LOGIN_USER, {
     onCompleted: (data) => {
-      // Use auth context to handle login
-      authLogin(data.login.token, data.login.user);
+      // Store the token in localStorage
+      localStorage.setItem('auth_token', data.login.token);
+      // Store user data if needed
+      localStorage.setItem('user', JSON.stringify(data.login.user));
       // Redirect to home page
       navigate('/homePage');
     },
@@ -28,15 +30,17 @@ const Login: React.FC = () => {
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setError('');
 
     // Validate form fields
     if (!email.trim() || !password.trim()) {
+      setError('Please fill out all fields.');
       setError('Please fill out all fields.');
       return;
     }
 
     try {
-      await loginMutation({
+      await login({
         variables: {
           email,
           password,
@@ -65,12 +69,14 @@ const Login: React.FC = () => {
 
         <form className="auth-form" onSubmit={handleLoginSubmit}>
           {error && <div className="error-message">{error}</div>}
+          {error && <div className="error-message">{error}</div>}
           <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            disabled={loading}
             disabled={loading}
           />
           <input
@@ -80,7 +86,11 @@ const Login: React.FC = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
             disabled={loading}
+            disabled={loading}
           />
+          <button type="submit" disabled={loading}>
+            {loading ? 'Logging in...' : 'Log In'}
+          </button>
           <button type="submit" disabled={loading}>
             {loading ? 'Logging in...' : 'Log In'}
           </button>
@@ -88,8 +98,11 @@ const Login: React.FC = () => {
 
         <p className="toggle-text">
           Don't have an account?{' '}
+          Don't have an account?{' '}
           <button
             className="signup-btn toggle-link"
+            onClick={() => navigate('/signup')}
+            disabled={loading}
             onClick={() => navigate('/signup')}
             disabled={loading}
           >
