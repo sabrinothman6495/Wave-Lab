@@ -8,7 +8,10 @@ import LandingPage from "./pages/Login";
 const App: React.FC = () => {
   return (
     <Router>
-      < Title logo="https://via.placeholder.com/100" title="Wave Lab" />  
+      <div>
+        <img src="https://via.placeholder.com/100" alt="Wave Lab Logo" />
+        <h1>Wave Lab</h1>
+      </div>
       {/* NavBar displayed on all pages */}
       <NavBar
         profilePage="/profile"

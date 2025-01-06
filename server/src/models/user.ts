@@ -1,62 +1,41 @@
-import { Schema, model, Document } from 'mongoose';
-import bcrypt from 'bcrypt';
+import mongoose, { Model, Schema } from 'mongoose';
+import bcrypt from 'bcryptjs';
+import { IUser } from '../types/user';
 
-// Define an interface for the User document
-interface IUser extends Document {
-  username: string;
-  email: string;
-  password: string;
-  Sound: Schema.Types.ObjectId[];
-  isCorrectPassword(password: string): Promise<boolean>;
+// Create an interface for the methods
+interface IUserMethods {
+  comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
-// Define the schema for the User document
-const userSchema = new Schema<IUser>(
-  {
-    username: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-    },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      match: [/.+@.+\..+/, 'Must match an email address!'],
-    },
-    password: {
-      type: String,
-      required: true,
-      minlength: 5,
-    },
-    Sound: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'sound',
-      },
-    ],
+// Create a type that includes both the document interface and methods
+type UserModel = Model<IUser, {}, IUserMethods>;
+
+const userSchema = new Schema<IUser, UserModel>({
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true
   },
-  {
-    timestamps: true,
-    toJSON: { getters: true },
-    toObject: { getters: true },
+  password: {
+    type: String,
+    required: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
   }
-);
+});
 
-userSchema.pre<IUser>('save', async function (next) {
-  if (this.isNew || this.isModified('password')) {
-    const saltRounds = 10;
-    this.password = await bcrypt.hash(this.password, saltRounds);
-  }
-
+userSchema.pre('save', async function(next) {
+  if (!this.isModified('password')) return next();
+  this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
-userSchema.methods.isCorrectPassword = async function (password: string): Promise<boolean> {
-  return bcrypt.compare(password, this.password);
+userSchema.methods.comparePassword = async function(candidatePassword: string): Promise<boolean> {
+  return await bcrypt.compare(candidatePassword, this.password);
 };
 
-const User = model<IUser>('User', userSchema);
-
-export default User;
+export const User = mongoose.model<IUser, UserModel>('User', userSchema);
