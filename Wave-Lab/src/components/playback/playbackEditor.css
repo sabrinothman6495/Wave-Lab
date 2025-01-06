@@ -1,0 +1,104 @@
+/* General Playback Editor Styling */
+.playback-editor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Waveform Container */
+#waveform {
+  width: 100%;
+  max-width: 600px;
+  height: 100px;
+  background-color: #f4f4f4;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  gap: 10px;
+}
+
+.controls button {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.controls .record-btn {
+  background-color: #ff4d4f;
+  color: white;
+}
+
+.controls .record-btn:hover {
+  background-color: #d9363e;
+}
+
+.controls .play-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.controls .play-btn:hover {
+  background-color: #1e7e34;
+}
+
+/* Save Section */
+.save-section {
+  display: flex;
+  gap: 10px;
+}
+
+.save-section input {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.save-section button {
+  padding: 10px 15px;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.save-section button:hover {
+  background-color: #0056b3;
+}
+
+/* Saved Recordings */
+.saved-recordings {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.saved-recordings h3 {
+  margin-bottom: 10px;
+}
+
+.saved-recordings ul {
+  list-style: none;
+  padding: 0;
+}
+
+.saved-recordings li {
+  margin-bottom: 10px;
+}
+
+.saved-recordings audio {
+  width: 100%;
+}

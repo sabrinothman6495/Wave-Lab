@@ -1,25 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import * as Tone from "tone";
 import "./piano.css";
+import PlaybackEditor from "../playback/playbackEditor";
+import WaveSurfer from "wavesurfer.js";
 
-// Interface for key properties
-interface KeyProps {
+interface PianoKeyProps {
   isBlack: boolean;
   note: string;
   onClick: (note: string) => void;
 }
 
-// Individual Piano Key Component
-const PianoKey: React.FC<KeyProps & { isActive: boolean }> = ({ isBlack, note, onClick, isActive }) => {
+const PianoKey: React.FC<PianoKeyProps> = ({ isBlack, note, onClick }) => {
   return (
     <div
-      className={`${isBlack ? "black-key" : "white-key"} ${isActive ? "active" : ""}`}
-      onClick={() => onClick(note)} // Play sound when clicked
-    >
-      {isBlack && <div />}
-    </div>
-  );
-};
+      className={isBlack ? "black-key" : "white-key"}
+      onClick={() => onClick(note)}
+    ></div>
+    );
+  };
 
 const Piano: React.FC = () => {
   const notes = [
@@ -105,34 +103,125 @@ const Piano: React.FC = () => {
     { isBlack: false, note: "G7" }, // G7
   ];
 
+  const [audioBuffer, setAudioBuffer] = useState<ArrayBuffer | null>(null);
+  const [savedRecordings, setSavedRecordings] = useState<
+    { name: string; audioUrl: string }[]
+  >([]);
+  const [recordName, setRecordName] = useState("");
+  const [isRecording, setIsRecording] = useState(false);
+  const recorder = useRef<Tone.Recorder | null>(null);
+  const synth = useRef(new Tone.Synth().toDestination());
+  const waveSurferRef = useRef<WaveSurfer | null>(null); // Reference for WaveSurfer
+
+  const playNote = (note: string) => {
+    synth.current.triggerAttackRelease(note, "8n");
+  };
+
+  const startRecording = () => {
+    recorder.current = new Tone.Recorder();
+    synth.current.connect(recorder.current);
+    recorder.current.start();
+    setIsRecording(true);
+  };
+
+  const stopRecording = async () => {
+    if (!recorder.current) return;
   
+    const recording = await recorder.current.stop();
+    const arrayBuffer = await recording.arrayBuffer();
+    setAudioBuffer(arrayBuffer);
+  
+    // Set isRecording to false
+    setIsRecording(false);
+    recorder.current = null;
+  };
+  
+  
+    const playbackRecording = () => {
+      if (!audioBuffer) {
+        alert("No recording available for playback.");
+        return;
+      }
+    
+      const audioUrl = URL.createObjectURL(new Blob([audioBuffer]));
+    
+      // Ensure WaveSurfer is initialized
+      if (!waveSurferRef.current) {
+        console.error("WaveSurfer is not initialized.");
+        return;
+      }
+    
+      // Load the audio into WaveSurfer
+      waveSurferRef.current.load(audioUrl);
+    
+      // Play once the audio is loaded
+      waveSurferRef.current.on("ready", () => {
+        console.log("Audio is ready for playback.");
+        waveSurferRef.current?.play();
+      });
+    
+      waveSurferRef.current.on("error", (e) => {
+        console.error("Error during audio playback:", e);
+      });
+    recorder.current = null;
+  };
 
-// Active key for visual feedback
-const [activeKey, setActiveKey] = useState<string | null>(null);
+  const saveRecording = () => {
+    if (!audioBuffer || !recordName.trim()) {
+      alert("Please enter a name for the recording.");
+      return;
+    }
 
-// Synth instance for playing notes
-const synth = new Tone.Synth().toDestination();
+    const audioUrl = URL.createObjectURL(new Blob([audioBuffer]));
+    setSavedRecordings((prev) => [...prev, { name: recordName, audioUrl }]);
+    setRecordName("");
+    alert(`Recording "${recordName}" saved successfully!`);
+  };
 
-// Play note with Tone.js and set visual feedback
-const playNote = (note: string) => {
-  setActiveKey(note);
-  synth.triggerAttackRelease(note, "8n"); // Play note for an eighth note duration
-  setTimeout(() => setActiveKey(null), 200); // Remove highlight after 200ms
-};
-
-return (
-  <div className="piano">
-    {notes.map((note, index) => (
-      <PianoKey
-        key={index}
-        isBlack={note.isBlack}
-        note={note.note}
-        onClick={playNote}
-        isActive={activeKey === note.note}
-      />
-    ))}
-  </div>
-);
-};
-
+  return (
+        <div className="piano-container">
+          {/* Recording Controls */}
+          <div className="recording-controls">
+            {!isRecording && (
+              <button className="start-record-btn" onClick={startRecording}></button>
+            )}
+            {isRecording && (
+              <button className="stop-record-btn" onClick={stopRecording}></button>
+            )}
+          </div>
+      
+          {/* Piano Keys */}
+          <div className="piano">
+            {notes.map((note, index) => (
+              <PianoKey key={index} isBlack={note.isBlack} note={note.note} onClick={playNote} />
+            ))}
+          </div>
+      
+          {/* Playback Controls */}
+          <div className="playback-controls">
+            <button className="play-btn" onClick={playbackRecording}></button>
+          </div>
+      
+          {/* Save Recording Section */}
+          {!isRecording && audioBuffer && (
+            <div className="save-recording">
+              <input
+                type="text"
+                value={recordName}
+                placeholder="Enter recording name"
+                onChange={(e) => setRecordName(e.target.value)}
+              />
+              <button onClick={saveRecording}>Save Recording</button>
+            </div>
+          )}
+      
+          {/* Playback Editor */}
+          <PlaybackEditor
+            audioBuffer={audioBuffer}
+            savedRecordings={savedRecordings}
+            waveSurferRef={waveSurferRef}
+          />
+        </div>
+      );
+    };
 export default Piano;

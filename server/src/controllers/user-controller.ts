@@ -1,45 +1,75 @@
 import type { Request, Response } from 'express';
-// Import the user model and signToken function
-import User from '../models/User.js';
+import User from '../models/user.js'; 
 import { signToken } from '../utils/auth.js';
 
+interface CreateUserBody {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
+
+interface LoginBody {
+  email: string;
+  password: string;
+}
 
 export const getUserProfile = (req: Request, res: Response) => {
-    const user = req.user; // TypeScript now recognizes the 'user' property
-    if (!user) {
-      return res.status(401).json({ message: 'Unauthorized' });
-    }
-    return res.json({ profile: user });
-  };
+  const user = req.user; 
+  if (!user) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+  return res.json({ profile: user });
+};
 
 // Create user
-export const createUser = async (req: Request, res: Response) => {
-  const user = await User.create(req.body);
+export const createUser = async (req: Request<{}, {}, CreateUserBody>, res: Response) => {
+  try {
+    const { firstName, lastName, email, password } = req.body;
 
-  if (!user) {
-    return res.status(400).json({ message: 'Something is wrong!' });
+    // Check if user already exists with the same email
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Email is already in use!' });
+    }
+
+    // Create a new user
+    const user = await User.create({ firstName, lastName, email, password });
+
+    if (!user) {
+      return res.status(400).json({ message: 'Something went wrong!' });
+    }
+
+    // Create token and send response
+    const token = signToken(user.email, `${user.firstName} ${user.lastName}`, (user._id as unknown as string), (user as any).role);
+    return res.json({ token, user });
+  } catch (error: any) {
+    return res.status(500).json({ message: 'Error creating user', error: error.message });
   }
-
-  const token = signToken(user.username, user.password, user._id);
-  return res.json({ token, user });
 };
 
 // Login user
-export const login = async (req: Request, res: Response) => {
-  const user = await User.findOne({
-    $or: [{ username: req.body.username }, { email: req.body.email }],
-  });
+export const login = async (req: Request<{}, {}, LoginBody>, res: Response) => {
+  try {
+    const { email, password } = req.body;
 
-  if (!user) {
-    return res.status(400).json({ message: "Can't find this user" });
+    // Find user by email
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ message: "Can't find this user" });
+    }
+
+    const correctPw = await (user as any).isCorrectPassword(password);  
+
+    if (!correctPw) {
+      return res.status(400).json({ message: 'Wrong password!' });
+    }
+
+    // Create token and send response
+    const token = signToken(user.email, `${user.firstName} ${user.lastName}`, (user._id as unknown as string), user.role);
+    return res.json({ token, user });
+  } catch (error) {
+    return res.status(500).json({ message: 'Error logging in', error: (error as any).message });
   }
-
-  const correctPw = await user.isCorrectPassword(req.body.password);
-
-  if (!correctPw) {
-    return res.status(400).json({ message: 'Wrong password!' });
-  }
-
-  const token = signToken(user.username, user.password, user._id);
-  return res.json({ token, user });
 };

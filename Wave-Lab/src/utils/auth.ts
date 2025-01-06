@@ -5,9 +5,12 @@ import jwt from 'jsonwebtoken';
 // Extending the JwtPayload interface to include additional data fields specific to the application.
 interface ExtendedJwt extends JwtPayload {
   data:{
-    username:string,
+    user:string,
     email:string,
     id:string
+    firstName:string,
+    lastName:string,
+    password:string
   }
 };
 

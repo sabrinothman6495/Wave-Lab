@@ -5,7 +5,9 @@ export const REGISTER_USER = gql`
     register(input: $input) {
       token
       user {
-        username
+        firstName
+        lastName
+        email
         profilePic
       }
     }
@@ -17,7 +19,9 @@ export const LOGIN_USER = gql`
     login(input: $input) {
       token
       user {
-        username
+        firstName
+        lastName
+        email
         profilePic
       }
     }
@@ -31,12 +35,14 @@ export const CREATE_SOUND = gql`
       guitar
       trumpet
       postedBy {
-        username
+        firstName
+        lastName
         profilePic
       }
     }
   }
 `;
+
 
 export const DELETE_SOUND = gql`
   mutation DeleteSound($id: ID!) {
@@ -56,7 +62,7 @@ export const CREATE_SOUND_COMPILATION = gql`
         trumpet
       }
       postedBy {
-        username
+        user
         profilePic
       }
     }

@@ -7,7 +7,12 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     overflow: hidden;
     margin: 20px auto;
+<<<<<<< HEAD
     max-width: 1200px;
+=======
+    max-width: 1400px;
+    
+>>>>>>> 8aa0427c60a59d2499f7d2f4f57259a4fbdef10a
   }
   
   /* White Keys */
@@ -54,4 +59,79 @@
   background-color: #444;
   transform: translateY(2px);
 }
+
+/* Recording Controls (Centered Above Piano) */
+.recording-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.start-record-btn,
+.stop-record-btn {
+  margin: 25px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.start-record-btn {
+  background-color: red;
+}
+
+.start-record-btn:hover {
+  transform: scale(1.1);
+}
+
+.stop-record-btn {
+  background-color: gray;
+  border-radius: 5px; /* Make it a square */
+}
+
+.stop-record-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Playback Controls (Centered Below Piano) */
+.playback-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.play-btn {
+  width: 0;
+  height: 0;
+  border-left: 25px solid green;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  background: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.play-btn:hover {
+  transform: scale(1.2);
+}
+
+/* Playback Controls (Centered Below Piano) */
+.playback-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* Playback Editor Styling */
+.playback-editor {
+padding: 20px;
+margin: 30px auto;
+}
+
   

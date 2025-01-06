@@ -1,32 +1,60 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
-import './Login.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./Login.css";
 
 const Login: React.FC = () => {
-  const [isLogin, setIsLogin] = useState(true); 
-  const [email, setEmail] = useState(''); 
-  const [password, setPassword] = useState(''); 
-  const navigate = useNavigate(); 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state
+  const [error, setError] = useState<string | null>(null); // Error state
+  const navigate = useNavigate();
 
- 
-  const toggleForm = () => {
-    setIsLogin(!isLogin);
-  };
-
-  // Handles form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  // Handle form submission for login
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Reset error state before new attempt
+    setError(null);
 
     // Validate form fields
     if (!email.trim() || !password.trim()) {
-      alert('Please fill out all fields.');
+      setError("Please fill out all fields.");
       return;
     }
 
-    console.log(`${isLogin ? 'Logging in' : 'Creating account'} for: ${email}`);
+    console.log(`Logging in for: ${email}`);
 
-  
-    navigate('/homePage'); 
+    setLoading(true); // Start loading
+
+    try {
+      // Make a POST request to the backend for login
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Store the token (you can store it in localStorage or cookies)
+        localStorage.setItem("token", data.token);
+        // Redirect to the home page after successful login
+        navigate("/homePage");
+      } else {
+        setError(data.message || "Login failed. Please try again."); // Show error message
+      }
+    } catch (err) {
+      console.error("Error logging in:", err);
+      setError("An error occurred. Please try again.");
+    } finally {
+      setLoading(false); // End loading
+    }
   };
 
   return (
@@ -39,8 +67,12 @@ const Login: React.FC = () => {
 
       {/* Form Section */}
       <div className="form-section">
-        <h2>{isLogin ? 'Log In' : 'Create Account'}</h2>
-        <form className="auth-form" onSubmit={handleSubmit}>
+        <h2>Log In</h2>
+
+        {/* Error Message */}
+        {error && <p className="error-message">{error}</p>}
+
+        <form className="auth-form" onSubmit={handleLoginSubmit}>
           <input
             type="email"
             placeholder="Email"
@@ -55,13 +87,19 @@ const Login: React.FC = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit">{isLogin ? 'Log In' : 'Sign Up'}</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Logging in..." : "Log In"}
+          </button>
         </form>
+
         <p className="toggle-text">
-          {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
-          <span onClick={toggleForm} className="toggle-link">
-            {isLogin ? 'Sign Up' : 'Log In'}
-          </span>
+          Don't have an account?{" "}
+          <button
+            className="signup-btn toggle-link"
+            onClick={() => navigate("/signup")}
+          >
+            Sign Up
+          </button>
         </p>
       </div>
     </div>
