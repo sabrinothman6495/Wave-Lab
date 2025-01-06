@@ -1,29 +1,24 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import NavBar from "./components/navbar/navbar";
+import LandingPage from "./pages/landingPage";
+import Login from "./pages/Login";
+import SignUp from "./pages/signUp";
+import HomePage from "./pages/homePage";
 import Profile from "./pages/profilePage";
-import Home from "./pages/homePage";
-import LandingPage from "./pages/Login";
 
 const App: React.FC = () => {
   return (
     <Router>
-      < Title logo="https://via.placeholder.com/100" title="Wave Lab" />  
-      {/* NavBar displayed on all pages */}
-      <NavBar
-        profilePage="/profile"
-        homePage="/home"
-        landingPage="/"
-      />
-      
-      {/* Define routes for each page */}
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/homePage" element={<HomePage />} />
+        <Route path="/profile" element={<Profile  />} />
       </Routes>
     </Router>
   );
 };
 
 export default App;
+
