@@ -10,11 +10,11 @@ interface KeyProps {
 }
 
 // Individual Piano Key Component
-const PianoKey: React.FC<KeyProps & { isActive: boolean }> = ({ isBlack, note, onClick, isActive }) => {
+const PianoKey: React.FC<KeyProps> = ({ isBlack, note, onClick }) => {
   return (
     <div
-      className={`${isBlack ? "black-key" : "white-key"} ${isActive ? "active" : ""}`}
-      onClick={() => onClick(note)} // Play sound when clicked
+      className={isBlack ? "black-key" : "white-key"}
+      onClick={() => onClick(note)}
     >
       {isBlack && <div />}
     </div>
@@ -107,30 +107,76 @@ const Piano: React.FC = () => {
 
   
 
-// Active key for visual feedback
-const [activeKey, setActiveKey] = useState<string | null>(null);
-
-// Synth instance for playing notes
+// Synth instance for sound generation
 const synth = new Tone.Synth().toDestination();
 
-// Play note with Tone.js and set visual feedback
+// State to track recorded notes
+const [recordedNotes, setRecordedNotes] = useState<
+  { note: string; time: number }[]
+>([]);
+const [isRecording, setIsRecording] = useState(false);
+
+// Start time for recording
+const [recordStartTime, setRecordStartTime] = useState<number | null>(null);
+
+// Play a note
 const playNote = (note: string) => {
-  setActiveKey(note);
-  synth.triggerAttackRelease(note, "8n"); // Play note for an eighth note duration
-  setTimeout(() => setActiveKey(null), 200); // Remove highlight after 200ms
+  synth.triggerAttackRelease(note, "8n");
+
+  // If recording, log the note and time
+  if (isRecording && recordStartTime !== null) {
+    const time = Tone.now() - recordStartTime;
+    setRecordedNotes((prev) => [...prev, { note, time }]);
+  }
+};
+
+// Start recording
+const startRecording = () => {
+  setRecordedNotes([]); // Clear previous recordings
+  setRecordStartTime(Tone.now()); // Set start time
+  setIsRecording(true);
+};
+
+// Stop recording
+const stopRecording = () => {
+  setIsRecording(false);
+  setRecordStartTime(null);
+};
+
+// Playback recorded notes
+const playback = () => {
+  const now = Tone.now();
+  recordedNotes.forEach(({ note, time }) => {
+    synth.triggerAttackRelease(note, "8n", now + time);
+  });
 };
 
 return (
-  <div className="piano">
-    {notes.map((note, index) => (
-      <PianoKey
-        key={index}
-        isBlack={note.isBlack}
-        note={note.note}
-        onClick={playNote}
-        isActive={activeKey === note.note}
-      />
-    ))}
+  <div className="piano-container">
+    {/* Piano Keys */}
+    <div className="piano">
+      {notes.map((note, index) => (
+        <PianoKey
+          key={index}
+          isBlack={note.isBlack}
+          note={note.note}
+          onClick={playNote}
+        />
+      ))}
+    </div>
+
+    {/* Controls */}
+    <div className="controls">
+      <button onClick={startRecording} disabled={isRecording}>
+        Start Recording
+      </button>
+      <button onClick={stopRecording} disabled={!isRecording}>
+        Stop Recording
+      </button>
+      <button onClick={playback} disabled={recordedNotes.length === 0}>
+        Playback
+      </button>
+    </div>
   </div>
 );
 };
