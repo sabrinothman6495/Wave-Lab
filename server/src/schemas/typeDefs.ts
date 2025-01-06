@@ -1,21 +1,25 @@
 const typeDefs = `
+  scalar Date
 
   type User {
     _id: ID!
-    username: String!
+    firstName: String!
+    lastName: String!
     email: String!
     sounds: [Sound!]!
   }
 
   type Sound {
-    id: ID!
-    name: String!
-    fileUrl: String!
-    category: Category!
-    createdAt: String!
+   id: ID!
     userId: ID!
     title: String!
     audioUrl: String!
+  }
+
+  type Instrument {
+    piano: Boolean!
+    guitar: Boolean!
+    trumpet: Boolean!
   }
 
   type Category {
@@ -24,11 +28,13 @@ const typeDefs = `
   }
 
   input UserInput {
-    username: String!
+    user: String!
     email: String!
     password: String!
+    firstName: String!
+    lastName: String!
   }
-  
+
   type Auth {
     token: String!
     user: User
@@ -36,23 +42,30 @@ const typeDefs = `
 
   type Query {
     users: [User!]!
-    user(username: String!): User
     getSounds: [Sound!]!
     getSound(id: ID!): Sound
     getCategories: [Category!]!
+    user(email: String!): User
+    getUser(id: ID!): User
     me: User
   }
 
   type Mutation {
     addUser(input: UserInput!): Auth
     login(email: String!, password: String!): Auth
-    addSound(name: String!, fileUrl: String!, category: ID!): Sound!
+    addSound(userId: ID!, title: String!, audioUrl: String!, instrument: InstrumentInput!): Sound!
     deleteSound(id: ID!): Boolean!
     addCategory(name: String!): Category!
     deleteCategory(id: ID!): Boolean!
+
     createSound(userId: ID!, title: String!, audioUrl: String!): Sound!
+  }
+
+  input InstrumentInput {
+    piano: Boolean!
+    guitar: Boolean!
+    trumpet: Boolean!
   }
 `;
 
 export default typeDefs;
-

@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-
+// Middleware to authenticate token and attach user to request
 export const authenticateToken = ({ req }: any) => {
   // Allows token to be sent via req.body, req.query, or headers
   let token = req.body.token || req.query.token || req.headers.authorization;
@@ -33,21 +33,22 @@ export const authenticateToken = ({ req }: any) => {
   return req;
 };
 
-export const signToken = (username: string, email: string, _id: unknown) => {
+// Function to sign a new token when user logs in or registers
+export const signToken = (firstName: string, lastName: string, email: string, _id: unknown) => {
   // Create a payload with the user information
-  const payload = { username, email, _id };
+  const payload = { firstName, lastName, email, _id };
   const secretKey: any = process.env.JWT_SECRET_KEY; // Get the secret key from environment variables
 
   // Sign the token with the payload and secret key, and set it to expire in 2 hours
   return jwt.sign({ data: payload }, secretKey, { expiresIn: '2h' });
 };
 
+// Custom error class for authentication-related issues
 export class AuthenticationError extends GraphQLError {
   constructor(message: string) {
     super(message, undefined, undefined, undefined, ['UNAUTHENTICATED']);
     Object.defineProperty(this, 'name', { value: 'AuthenticationError' });
   }
-};
+}
 
 export default authenticateToken;
-

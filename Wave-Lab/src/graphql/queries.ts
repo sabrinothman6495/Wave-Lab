@@ -4,21 +4,24 @@ export const GET_USER_PROFILE = gql`
   query GetUserProfile {
     me {
       _id
-      username
+      firstName
+      lastName
       email
       Sound {
         _id
         title
+        audioUrl
       }
     }
   }
 `;
 
 export const UPDATE_PROFILE = gql`
-  mutation UpdateProfile($username: String, $email: String) {
-    updateUser(username: $username, email: $email) {
+  mutation UpdateProfile($lastName: String, $email: String) {
+    updateUser(lastName: $lastName, email: $email) {
       _id
-      username
+      firstName
+      lastName
       email
     }
   }
