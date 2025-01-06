@@ -3,7 +3,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 export interface ISound extends Document {
   userId: string;
   title: string;
-  audioUrl: string;
+  audioData: string;  // Base64 encoded audio data
   instrument: {
     piano: boolean;
     guitar: boolean;
@@ -18,46 +18,48 @@ export interface ISound extends Document {
 
 const SoundSchema: Schema = new Schema(
   {
-    userId: { 
-      type: String, 
+    userId: {
+      type: String,
       required: true,
-      ref: 'User' // This allows you to populate user data if needed
+      ref: 'User'
     },
-    title: { 
-      type: String, 
-      required: true 
+    title: {
+      type: String,
+      required: true
     },
-    audioUrl: { 
-      type: String, 
-      required: true 
+    audioData: {
+      type: String,  // Will store Base64 encoded audio data
+      required: true
     },
     instrument: {
-      piano: { 
-        type: Boolean, 
-        default: false 
+      piano: {
+        type: Boolean,
+        default: false
       },
-      guitar: { 
-        type: Boolean, 
-        default: false 
+      guitar: {
+        type: Boolean,
+        default: false
       },
-      trumpet: { 
-        type: Boolean, 
-        default: false 
+      trumpet: {
+        type: Boolean,
+        default: false
       }
     },
-    // Audio metadata fields
-    duration: { 
-      type: Number 
+    duration: {
+      type: Number
     },
-    waveformData: [{ 
-      type: Number 
+    waveformData: [{
+      type: Number
     }],
-    frequencyData: [{ 
-      type: Number 
+    frequencyData: [{
+      type: Number
     }]
   },
   { timestamps: true }
 );
+
+// Add index for faster queries
+SoundSchema.index({ userId: 1, createdAt: -1 });
 
 const Sound = mongoose.model<ISound>('Sound', SoundSchema);
 
