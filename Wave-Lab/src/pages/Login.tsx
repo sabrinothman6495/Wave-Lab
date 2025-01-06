@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
+import { useAuth } from '../context/AuthContext';
+import type { AuthResponse } from '../utils/types';
 import './Login.css';
 
 const Login: React.FC = () => {
@@ -12,13 +14,12 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { login: authLogin } = useAuth();
 
-  const [login, { loading }] = useMutation(LOGIN_USER, {
+  const [loginMutation, { loading }] = useMutation<{ login: AuthResponse }>(LOGIN_USER, {
     onCompleted: (data) => {
-      // Store the token in localStorage
-      localStorage.setItem('auth_token', data.login.token);
-      // Store user data if needed
-      localStorage.setItem('user', JSON.stringify(data.login.user));
+      // Use auth context to handle login
+      authLogin(data.login.token, data.login.user);
       // Redirect to home page
       navigate('/homePage');
     },
@@ -40,7 +41,7 @@ const Login: React.FC = () => {
     }
 
     try {
-      await login({
+      await loginMutation({
         variables: {
           email,
           password,

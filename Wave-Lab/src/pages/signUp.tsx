@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { ADD_USER } from '../utils/mutations';
+import { useAuth } from '../context/AuthContext';
+import type { AuthResponse, UserInput } from '../utils/types';
 import './SignUp.css';
 
 const SignUp: React.FC = () => {
@@ -18,21 +20,23 @@ const SignUp: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { login: authLogin } = useAuth();
 
-  const [addUser, { loading }] = useMutation(ADD_USER, {
-    onCompleted: (data) => {
-      // Store the token in localStorage
-      localStorage.setItem('auth_token', data.addUser.token);
-      // Store user data if needed
-      localStorage.setItem('user', JSON.stringify(data.addUser.user));
-      // Show success message and redirect
-      alert('Account created successfully!');
-      navigate('/homePage');
-    },
-    onError: (error) => {
-      setError(error.message);
-    },
-  });
+  const [addUser, { loading }] = useMutation<{ addUser: AuthResponse }, { input: UserInput }>(
+    ADD_USER,
+    {
+      onCompleted: (data) => {
+        // Use auth context to handle login
+        authLogin(data.addUser.token, data.addUser.user);
+        // Show success message and redirect
+        alert('Account created successfully!');
+        navigate('/homePage');
+      },
+      onError: (error) => {
+        setError(error.message);
+      },
+    }
+  );
 
   const handleSignUpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,14 +44,32 @@ const SignUp: React.FC = () => {
     setError('');
 
     // Validate form fields
-    if (!email.trim() || !password.trim() || !confirmPassword.trim() || 
-        !firstName.trim() || !lastName.trim()) {
+    if (
+      !email.trim() ||
+      !password.trim() ||
+      !confirmPassword.trim() ||
+      !firstName.trim() ||
+      !lastName.trim()
+    ) {
       setError('Please fill out all fields.');
       return;
     }
 
     if (password !== confirmPassword) {
       setError('Passwords do not match.');
+      return;
+    }
+
+    // Basic password validation
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters long.');
+      return;
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError('Please enter a valid email address.');
       return;
     }
 
@@ -126,6 +148,7 @@ const SignUp: React.FC = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
             disabled={loading}
+            minLength={8}
           />
           <input
             type="password"
