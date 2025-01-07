@@ -1,4 +1,4 @@
-import User from '../models/user.js';
+import User, { IUser } from '../models/user.js';
 import Sound from '../models/Sound.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
 import { GraphQLError } from 'graphql';
@@ -34,7 +34,7 @@ interface SoundInput {
 
 const resolvers = {
   Query: {
-    users: async () => {
+    users: async (): Promise<IUser[]> => {
       try {
         return await User.find().populate('sounds');
       } catch (error) {
@@ -44,7 +44,7 @@ const resolvers = {
       }
     },
 
-    user: async (_parent: unknown, { email }: { email: string }) => {
+    user: async (_parent: unknown, { email }: { email: string }): Promise<IUser> => {
       try {
         const user = await User.findOne({ email }).populate('sounds');
         if (!user) {
@@ -98,7 +98,7 @@ const resolvers = {
       }
     },
 
-    me: async (_parent: unknown, _args: unknown, context: Context) => {
+    me: async (_parent: unknown, _args: unknown, context: Context): Promise<IUser> => {
       if (!context.user) {
         throw new AuthenticationError('You need to be logged in!');
       }
@@ -264,7 +264,7 @@ const resolvers = {
       _parent: unknown,
       { firstName, lastName }: { firstName?: string; lastName?: string },
       context: Context
-    ) => {
+    ): Promise<IUser> => {
       if (!context.user) {
         throw new AuthenticationError('You need to be logged in!');
       }

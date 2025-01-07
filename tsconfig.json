@@ -1,0 +1,35 @@
+{
+    "files": [],
+    "compilerOptions": {
+      /* Base Configuration */
+      "target": "ES2020",
+      "module": "ESNext",
+      "lib": ["ES2020", "DOM", "DOM.Iterable"],
+      "skipLibCheck": true,
+      "moduleResolution": "bundler",
+      
+      /* Type Checking */
+      "strict": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noFallthroughCasesInSwitch": true,
+      "exactOptionalPropertyTypes": true,
+      "noImplicitReturns": true,
+      "noImplicitOverride": true,
+      "useUnknownInCatchVariables": true,
+      
+      /* Module Resolution */
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      "forceConsistentCasingInFileNames": true,
+      "isolatedModules": true,
+      
+      /* Project Structure */
+      "composite": true,
+      "declaration": true
+    },
+    "references": [
+      { "path": "./Wave-Lab" },
+      { "path": "./server" }
+    ]
+  }
