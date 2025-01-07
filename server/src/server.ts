@@ -1,34 +1,45 @@
 import express from 'express';
 import path from 'node:path';
-import cors from 'cors';
 import type { Request, Response } from 'express';
-import db from './config/connection.js'
+import db from './config/connection.js';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { typeDefs, resolvers } from './schemas/index.js';
 import authenticateToken from './utils/auth.js';
+import middleware from './middleware/index.js';
 
 const startApolloServer = async () => {
   const app = express();
-  
-  // Add CORS middleware before other middleware
-  app.use(cors());
-  app.use(express.urlencoded({ extended: false }));
-  app.use(express.json());
+
+  // Apply middleware
+  app.use(middleware.cors);
+  app.use(middleware.json);
+  app.use(middleware.urlencoded);
 
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+    formatError: (error) => {
+      console.error('GraphQL Error:', error);
+      return error;
+    },
   });
 
   await server.start();
   await db();
 
   app.use('/graphql', expressMiddleware(server, {
-    context: authenticateToken
+    context: async ({ req }) => {
+      // Enhanced context with better error handling
+      try {
+        const contextValue = await authenticateToken({ req });
+        return contextValue;
+      } catch (error) {
+        console.error('Context creation error:', error);
+        return { user: null };
+      }
+    }
   }));
-
-  const PORT = process.env.PORT || 3001;
 
   if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../client/dist')));
@@ -37,6 +48,10 @@ const startApolloServer = async () => {
     });
   }
 
+  // Add error handling middleware last
+  app.use(middleware.errorHandler);
+
+  const PORT = process.env.PORT || 3001;
   app.listen(PORT, () => {
     console.log(`API server running on port ${PORT}!`);
     console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
@@ -44,5 +59,6 @@ const startApolloServer = async () => {
 };
 
 startApolloServer().catch(err => {
-  console.error('Error starting server:', err);
+  console.error('Failed to start server:', err);
+  process.exit(1);
 });
