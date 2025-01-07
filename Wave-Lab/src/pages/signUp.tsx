@@ -6,6 +6,14 @@ import { useAuth } from '../context/AuthContext';
 import type { AuthResponse, UserInput } from '../utils/types';
 import './SignUp.css';
 
+interface AddUserResponse {
+  addUser: AuthResponse;
+}
+
+interface AddUserVariables {
+  input: UserInput;
+}
+
 const SignUp: React.FC = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -22,21 +30,22 @@ const SignUp: React.FC = () => {
   const navigate = useNavigate();
   const { login: authLogin } = useAuth();
 
-  const [addUser, { loading }] = useMutation<{ addUser: AuthResponse }, { input: UserInput }>(
-    ADD_USER,
-    {
-      onCompleted: (data) => {
-        // Use auth context to handle login
-        authLogin(data.addUser.token, data.addUser.user);
-        // Show success message and redirect
-        alert('Account created successfully!');
-        navigate('/homePage');
-      },
-      onError: (error) => {
-        setError(error.message);
-      },
-    }
-  );
+  const [addUser, { loading }] = useMutation<AddUserResponse, AddUserVariables>(
+    ADD_USER, {
+    onCompleted: (data) => {
+      console.log('Registration successful:', data);
+      authLogin(data.addUser.token, data.addUser.user);
+      navigate('/homePage');
+    },
+    onError: (error) => {
+      console.error('Detailed error:', {
+        message: error.message,
+        networkError: error.networkError,
+        graphQLErrors: error.graphQLErrors
+      });
+      setError(error.message);
+    },
+  });
 
   const handleSignUpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
