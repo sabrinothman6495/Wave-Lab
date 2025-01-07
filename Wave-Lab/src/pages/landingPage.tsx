@@ -16,7 +16,7 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className="landing-page">
-      <Title logo="https://via.placeholder.com/100" title="Wave Lab" />
+      <Title title="Wave Lab" />
       {/* Welcome Message */}
       <h1 className="welcome">Welcome to Wave Lab!</h1>
       <p className="description">

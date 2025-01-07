@@ -6,7 +6,7 @@ import Title from "../components/navbar/title";
 const homePage: React.FC = () => {
     return (
         <div>
-            <Title logo="https://via.placeholder.com/100" title="Wave Lab" />
+            <Title title="Wave Lab" />
             {/* <NavBar profilePage="/Profile" homePage="/homePage" landingPage="/" /> */}
             <Piano />
         </div>
