@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import * as Tone from "tone";
 import "./piano.css";
 import PlaybackEditor from "../playback/playbackEditor";
+import EQControls from "../dropdown/tone";
 import WaveSurfer from "wavesurfer.js";
 import InstrumentSelector from "../dropdown/instrument";
 
@@ -112,8 +113,10 @@ const Piano: React.FC = () => {
   const [isRecording, setIsRecording] = useState(false);
   const recorder = useRef<Tone.Recorder | null>(null);
   const waveSurferRef = useRef<WaveSurfer | null>(null);
+
   const [selectedInstrument, setSelectedInstrument] = useState<string>("piano");
   const [synth, setSynth] = useState<Tone.PolySynth>(new Tone.PolySynth().toDestination());
+  const eq = useRef(new Tone.EQ3().toDestination());
 
   useEffect(() => {
     switchInstrument(selectedInstrument);
@@ -136,6 +139,7 @@ const Piano: React.FC = () => {
         break;
     }
 
+    newSynth.connect(eq.current);
     setSynth(newSynth);
   };
 
@@ -183,16 +187,47 @@ const Piano: React.FC = () => {
     setRecordName("");
   };
 
+  const handleEQChange = (preset: string) => {
+    switch (preset) {
+      case "flat":
+        eq.current.low.value = 0;
+        eq.current.mid.value = 0;
+        eq.current.high.value = 0;
+        break;
+      case "bassBoost":
+        eq.current.low.value = 12;
+        eq.current.mid.value = 0;
+        eq.current.high.value = -12;
+        break;
+      case "midBoost":
+        eq.current.low.value = -12;
+        eq.current.mid.value = 12;
+        eq.current.high.value = -12;
+        break;
+      case "trebleBoost":
+        eq.current.low.value = -12;
+        eq.current.mid.value = 0;
+        eq.current.high.value = 12;
+        break;
+      default:
+        eq.current.low.value = 0;
+        eq.current.mid.value = 0;
+        eq.current.high.value = 0;
+    }
+  };
+
   return (
     <div className="piano-container">
       {/* Instrument Selector */}
       <InstrumentSelector onSelectInstrument={setSelectedInstrument} />
 
+      {/* EQ Controls */}
+      <EQControls onEQChange={handleEQChange} />
+
       {/* Recording Controls */}
       <div className="recording-controls">
         {!isRecording && (
           <button className="start-record-btn" onClick={startRecording}>
-          
           </button>
         )}
         {isRecording && (
