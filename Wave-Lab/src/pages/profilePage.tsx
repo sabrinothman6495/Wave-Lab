@@ -1,12 +1,5 @@
-import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Text,
-  Heading,
-  VStack,
-  Input,
-} from "@chakra-ui/react";
+import React, { useState, useEffect } from "react";
+import { Box, Button, Image, Text, Heading, VStack, Input } from "@chakra-ui/react";
 import NavBar from "../components/navbar/navbar";
 import Title from "../components/navbar/title";
 import { Avatar } from "../components/ui/avatar"
@@ -20,43 +13,83 @@ const pickPalette = (name: string) => {
 };
 
 interface UserProfile {
-  firstName?: string;
-  lastName?: string;
-  profilePic: string; // URL of the profile picture
+  username: string;
+  profilePic: string;
   email: string;
-  password: string; // New password field
-  sounds: string[]; // List of saved sounds
+  password: string;
+  sounds: string[];
 }
 
 const Profile: React.FC = () => {
   const [userProfile, setUserProfile] = useState<UserProfile>({
-    profilePic: "", // Placeholder for avatar
-    firstName: "Joe",
-    lastName: "Kerr",
-    email: "johndoe@gmail.com",
-    password: "password123",
-    sounds: ["sound1.mp3", "sound2.mp3", "sound3.mp3"],
+    profilePic: "https://via.placeholder.com/150",
+    username: "",
+    email: "",
+    password: "",
+    sounds: [],
   });
 
   const [isEditing, setIsEditing] = useState(false);
-  const [tempFirstName, setTempFirstName] = useState(userProfile.firstName);
-  const [tempLastName, setTempLastName] = useState(userProfile.lastName);
+  const [tempUsername, setTempUsername] = useState(userProfile.username);
   const [tempEmail, setTempEmail] = useState(userProfile.email);
   const [tempPassword, setTempPassword] = useState(userProfile.password);
+  const [tempProfilePic, setTempProfilePic] = useState(userProfile.profilePic);
 
-  // Save Changes
+  // Function to fetch user data from backend
+  const fetchUserProfile = async () => {
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+      console.error('No token found');
+      return;
+    }
+  
+    try {
+      const response = await fetch('/api/users/me', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error fetching user profile');
+      }
+  
+      const data = await response.json();
+      console.log(data); // Your profile data here
+    } catch (error) {
+      console.error(error);
+    }
+  };  
+
+  useEffect(() => {
+    fetchUserProfile();
+  }, []);
+
+  const handleProfilePicUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        setTempProfilePic(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSave = () => {
-    setUserProfile((prev) => ({
-      ...prev,
-      firstName: tempFirstName,
-      lastName: tempLastName,
+    setUserProfile({
+      ...userProfile,
+      username: tempUsername,
       email: tempEmail,
       password: tempPassword,
-    }));
+      profilePic: tempProfilePic,
+    });
     setIsEditing(false);
   };
 
-  // Cancel Changes
   const handleCancel = () => {
     setTempFirstName(userProfile.firstName);
     setTempLastName(userProfile.lastName);
@@ -80,15 +113,20 @@ const Profile: React.FC = () => {
         bg="white"
       >
         <VStack gap={4}>
-          {/* Profile Picture */}
-          <Avatar
-            name={`${userProfile.firstName} ${userProfile.lastName}`}
-            colorPalette={pickPalette(
-              `${userProfile.firstName || ""} ${userProfile.lastName || ""}`
-            )}
+          <Image
+            borderRadius="full"
+            boxSize="120px"
+            src={tempProfilePic}
+            alt={`${userProfile.username}'s profile`}
           />
+          {isEditing && (
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={handleProfilePicUpload}
+            />
+          )}
 
-          {/* Editable Fields */}
           {isEditing ? (
             <>
               <Input
@@ -134,7 +172,6 @@ const Profile: React.FC = () => {
             </>
           )}
 
-          {/* Buttons */}
           {isEditing ? (
             <VStack gap={2}>
               <Button colorScheme="blue" size="sm" onClick={handleSave}>
@@ -160,3 +197,4 @@ const Profile: React.FC = () => {
 };
 
 export default Profile;
+
