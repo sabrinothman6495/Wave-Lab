@@ -56,62 +56,78 @@
   transform: translateY(2px);
 }
 
-.controls {
+/* Recording Controls (Centered Above Piano) */
+.recording-controls {
   display: flex;
-  justify-content: center; /* Center buttons horizontally */
-  align-items: center; /* Center buttons vertically */
-  gap: 20px; /* Space between buttons */
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.start-record-btn,
+.stop-record-btn {
+  margin: 25px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.start-record-btn {
+  background-color: red;
+}
+
+.start-record-btn:hover {
+  transform: scale(1.1);
+}
+
+.stop-record-btn {
+  background-color: gray;
+  border-radius: 5px; /* Make it a square */
+}
+
+.stop-record-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Playback Controls (Centered Below Piano) */
+.playback-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-top: 20px;
 }
 
-/* General button styles */
-.controls button {
-  width: 60px;
-  height: 60px;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s ease; /* Hover effect */
-}
-
-/* Record Button (Red Circle) */
-.controls .record-btn {
-  background-color: red;
-  border-radius: 50%; /* Make it circular */
-}
-
-.controls .record-btn:hover {
-  transform: scale(1.1); /* Slight zoom on hover */
-}
-
-/* Play Button (Green Triangle) */
-.controls .play-btn {
-  background: transparent; /* Transparent background */
-  position: relative;
+.play-btn {
   width: 0;
   height: 0;
-  border-left: 30px solid green; /* Triangle shape */
-  border-top: 20px solid transparent;
-  border-bottom: 20px solid transparent;
+  border-left: 25px solid green;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  background: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-.controls .play-btn:hover {
-  transform: scale(1.2); /* Slight zoom on hover */
+.play-btn:hover {
+  transform: scale(1.2);
 }
 
-/* Stop Button */
-.controls .stop-btn {
-  background-color: #333; /* Dark gray for stop button */
-  border-radius: 5px; /* Optional square with rounded corners */
-  color: white;
-  font-size: 14px;
-  padding: 0;
+/* Playback Controls (Centered Below Piano) */
+.playback-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
 }
 
-.controls .stop-btn:hover {
-  background-color: #555; /* Lighter gray on hover */
-  transform: scale(1.1); /* Slight zoom */
+/* Playback Editor Styling */
+.playback-editor {
+padding: 20px;
+margin: 30px auto;
 }
+
   

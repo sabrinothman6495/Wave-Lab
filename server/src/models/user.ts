@@ -1,24 +1,33 @@
 import { Schema, model, Document } from 'mongoose';
 import bcrypt from 'bcrypt';
+import { ISound } from './Sound';
 
-// Define an interface for the User document
 interface IUser extends Document {
-  username: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
-  Sound: Schema.Types.ObjectId[];
-  isCorrectPassword(password: string): Promise<boolean>;
+  sounds: ISound[];
+  user?: {
+    _id: string;
+  };
+  isCorrectPassword: (password: string) => Promise<boolean>;
+  role?: string;
 }
 
-// Define the schema for the User document
 const userSchema = new Schema<IUser>(
   {
-    username: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-    },
+  firstName: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+    trim: true,
+
+  },
     email: {
       type: String,
       required: true,
@@ -30,12 +39,7 @@ const userSchema = new Schema<IUser>(
       required: true,
       minlength: 5,
     },
-    Sound: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'sound',
-      },
-    ],
+    sounds: [{ type: Schema.Types.ObjectId, ref: 'Sound' }]
   },
   {
     timestamps: true,

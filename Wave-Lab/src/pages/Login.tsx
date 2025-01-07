@@ -1,32 +1,56 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+import { LOGIN_USER } from '../utils/mutations';
+import { useAuth } from '../context/AuthContext';
+import type { AuthResponse } from '../utils/types';
 import './Login.css';
 
 const Login: React.FC = () => {
-  const [isLogin, setIsLogin] = useState(true); 
-  const [email, setEmail] = useState(''); 
-  const [password, setPassword] = useState(''); 
-  const navigate = useNavigate(); 
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const { login: authLogin } = useAuth();
 
- 
-  const toggleForm = () => {
-    setIsLogin(!isLogin);
-  };
+  const [loginMutation, { loading }] = useMutation<{ login: AuthResponse }>(LOGIN_USER, {
+    onCompleted: (data) => {
+      // Use auth context to handle login
+      authLogin(data.login.token, data.login.user);
+      // Redirect to home page
+      navigate('/homePage');
+    },
+    onError: (error) => {
+      setError(error.message);
+    },
+  });
 
-  // Handles form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+    setError('');
 
     // Validate form fields
     if (!email.trim() || !password.trim()) {
-      alert('Please fill out all fields.');
+      setError('Please fill out all fields.');
+      setError('Please fill out all fields.');
       return;
     }
 
-    console.log(`${isLogin ? 'Logging in' : 'Creating account'} for: ${email}`);
-
-  
-    navigate('/homePage'); 
+    try {
+      await loginMutation({
+        variables: {
+          email,
+          password,
+        },
+      });
+    } catch (err) {
+      // Error is handled by onError callback
+      console.error('Login error:', err);
+    }
   };
 
   return (
@@ -39,14 +63,22 @@ const Login: React.FC = () => {
 
       {/* Form Section */}
       <div className="form-section">
-        <h2>{isLogin ? 'Log In' : 'Create Account'}</h2>
-        <form className="auth-form" onSubmit={handleSubmit}>
+        <h2>Log In</h2>
+
+        {/* Error Message */}
+        {error && <p className="error-message">{error}</p>}
+
+        <form className="auth-form" onSubmit={handleLoginSubmit}>
+          {error && <div className="error-message">{error}</div>}
+          {error && <div className="error-message">{error}</div>}
           <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            disabled={loading}
+            disabled={loading}
           />
           <input
             type="password"
@@ -54,14 +86,29 @@ const Login: React.FC = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            disabled={loading}
+            disabled={loading}
           />
-          <button type="submit">{isLogin ? 'Log In' : 'Sign Up'}</button>
+          <button type="submit" disabled={loading}>
+            {loading ? 'Logging in...' : 'Log In'}
+          </button>
+          <button type="submit" disabled={loading}>
+            {loading ? 'Logging in...' : 'Log In'}
+          </button>
         </form>
+
         <p className="toggle-text">
-          {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
-          <span onClick={toggleForm} className="toggle-link">
-            {isLogin ? 'Sign Up' : 'Log In'}
-          </span>
+          Don't have an account?{' '}
+          Don't have an account?{' '}
+          <button
+            className="signup-btn toggle-link"
+            onClick={() => navigate('/signup')}
+            disabled={loading}
+            onClick={() => navigate('/signup')}
+            disabled={loading}
+          >
+            Sign Up
+          </button>
         </p>
       </div>
     </div>
