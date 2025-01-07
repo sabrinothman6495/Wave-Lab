@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
 import { ISound } from './Sound';
-interface IUser extends Document {
+export interface IUser extends Document {
     firstName: string;
     lastName: string;
     email: string;
