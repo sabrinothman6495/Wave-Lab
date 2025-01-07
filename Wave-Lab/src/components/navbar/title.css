@@ -13,8 +13,7 @@
   
   /* Logo image */
   .title-container img {
-    position: absolute;
-    margin-right: 200px;
+    position: relative; /* Optional: relative positioning */
     width: 50px;
     height: 50px;
     object-fit: cover; /* Ensure logo fits within bounds */
@@ -24,7 +23,7 @@
   
   /* Title text */
   .title-container h1 {
-    position: absolute; /* Optional: absolute positioning */
+    position: relative; /* Optional: absolute positioning */
     font-size: 24px;
     font-weight: bold;
     color: #333; /* Dark text color */
