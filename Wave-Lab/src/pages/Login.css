@@ -55,14 +55,17 @@
 .auth-form input {
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd; /* Light border color */
   border-radius: 5px;
+  background-color: #f9f9f9; /* Light background color */
+  color: #333; /* Dark text for readability */
   width: 100%;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
 .auth-form input:focus {
   border-color: #007bff; /* Blue border on focus */
+  background-color: #ffffff; /* Pure white background on focus */
   outline: none;
 }
 

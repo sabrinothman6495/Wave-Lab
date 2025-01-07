@@ -13,7 +13,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <ApolloProvider client={client}>
       <ChakraProvider value={defaultSystem}>
           <ThemeProvider>
-    <App />
+            <App />
         </ThemeProvider>
     </ChakraProvider>
     </ApolloProvider>
