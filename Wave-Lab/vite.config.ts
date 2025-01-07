@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()] as const,  // Add type assertion here
+  plugins: [react()],  // Add type assertion here
   server: {
     port: 5174, // vite dev server port
     proxy: {
