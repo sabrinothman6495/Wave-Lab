@@ -9,7 +9,11 @@ const saltRounds = 10;
 
 // Middleware to authenticate token and attach user to request
 export const authenticateToken = ({ req }: any) => {
-  // Allows token to be sent via req.body, req.query, or headers
+  // Allow unauthenticated access for the 'addUser' mutation
+  if (req.body.operationName === 'AddUser') {
+    return req;
+  }
+
   let token = req.body.token || req.query.token || req.headers.authorization;
 
   // If the token is sent in the authorization header, extract the token from the header

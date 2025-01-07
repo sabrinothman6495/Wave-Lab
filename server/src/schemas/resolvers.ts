@@ -123,26 +123,23 @@ const resolvers = {
   Mutation: {
     addUser: async (_parent: unknown, { input }: { input: UserInput }) => {
       try {
+        // Check if the email is already registered
         const existingUser = await User.findOne({ email: input.email });
         if (existingUser) {
           throw new GraphQLError('User already exists with this email', {
-            extensions: { code: 'BAD_USER_INPUT' }
+            extensions: { code: 'BAD_USER_INPUT' },
           });
         }
-
+  
+        // Create a new user
         const user = await User.create(input);
-        const token = signToken(
-          user.firstName,
-          user.lastName,
-          user.email,
-          user._id
-        );
-
-        return { token, user };
+  
+        // Return the newly created user
+        return { user };
       } catch (error) {
         if (error instanceof GraphQLError) throw error;
         throw new GraphQLError('Failed to create user', {
-          extensions: { code: 'DATABASE_ERROR' }
+          extensions: { code: 'DATABASE_ERROR' },
         });
       }
     },

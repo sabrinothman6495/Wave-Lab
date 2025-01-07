@@ -7,10 +7,10 @@ export const QUERY_USER = gql`
       firstName
       lastName
       email
-      sounds {  // Changed to plural
+      sounds {  
         _id
-        title      // Make sure this matches your schema
-        audioData  // Changed from audioUrl to match schema
+        title      
+        audioData  
       }
     }
   }
@@ -23,7 +23,7 @@ export const QUERY_ME = gql`
       firstName
       lastName
       email
-      sounds {    // Changed to plural
+      sounds {    
         _id
         title
         audioData
