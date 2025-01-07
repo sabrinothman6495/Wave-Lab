@@ -1,6 +1,6 @@
 import React from "react";
+import { Link as RouterLink } from "react-router-dom"; // Import Link from react-router-dom
 import "./navbar.css";
-import { Link } from "@chakra-ui/react";
 
 interface NavBarProps {
   profilePage: string;
@@ -8,20 +8,19 @@ interface NavBarProps {
   landingPage: string;
 }
 
-
-
 const NavBar: React.FC<NavBarProps> = ({ profilePage, homePage, landingPage }) => {
   return (
     <nav>
       <ul>
         <li>
-          <Link href={profilePage}>Profile</Link>
+          {/* Use RouterLink for internal navigation */}
+          <RouterLink to={profilePage}>Profile</RouterLink>
         </li>
         <li>
-          <Link href={homePage}>Home</Link>
+          <RouterLink to={homePage}>Home</RouterLink>
         </li>
         <li>
-          <Link href={landingPage}>Landing Page</Link>
+          <RouterLink to={landingPage}>Landing Page</RouterLink>
         </li>
       </ul>
     </nav>
