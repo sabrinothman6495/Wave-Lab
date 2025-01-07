@@ -1,7 +1,9 @@
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 import { GraphQLError } from 'graphql';
 import dotenv from 'dotenv';
 dotenv.config();
+const saltRounds = 10;
 // Middleware to authenticate token and attach user to request
 export const authenticateToken = ({ req }) => {
     // Allows token to be sent via req.body, req.query, or headers
@@ -34,6 +36,15 @@ export const signToken = (firstName, lastName, email, _id) => {
     const secretKey = process.env.JWT_SECRET_KEY; // Get the secret key from environment variables
     // Sign the token with the payload and secret key, and set it to expire in 2 hours
     return jwt.sign({ data: payload }, secretKey, { expiresIn: '2h' });
+};
+// Function to hash passwords before saving them
+export const hashPassword = async (password) => {
+    const salt = await bcrypt.genSalt(saltRounds);
+    return bcrypt.hash(password, salt);
+};
+// Function to compare the provided password with the stored hashed password
+export const comparePassword = async (inputPassword, storedPassword) => {
+    return bcrypt.compare(inputPassword, storedPassword);
 };
 // Custom error class for authentication-related issues
 export class AuthenticationError extends GraphQLError {
