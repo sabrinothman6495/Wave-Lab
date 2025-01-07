@@ -1,12 +1,9 @@
 const typeDefs = `
-<<<<<<< HEAD
-
-=======
   "A user account in the system"
->>>>>>> origin
   type User {
     _id: ID!
-    username: String!
+    firstName: String!
+    lastName: String!
     email: String!
     sounds: [Sound!]!
     createdAt: String!
@@ -15,15 +12,7 @@ const typeDefs = `
 
   "A sound recording with its associated metadata"
   type Sound {
-<<<<<<< HEAD
-    id: ID!
-    name: String!
-    fileUrl: String!
-    category: Category!
-    createdAt: String!
-=======
     _id: ID!
->>>>>>> origin
     userId: ID!
     title: String!
     audioData: String!  # Base64 encoded audio data
@@ -35,30 +24,6 @@ const typeDefs = `
     updatedAt: String!
   }
 
-<<<<<<< HEAD
-  type Category {
-    id: ID!
-    name: String!
-  }
-
-  input UserInput {
-    username: String!
-    email: String!
-    password: String!
-  }
-  
-  type Auth {
-    token: String!
-    user: User
-  }
-
-  type Query {
-    users: [User!]!
-    user(username: String!): User
-    getSounds: [Sound!]!
-    getSound(id: ID!): Sound
-    getCategories: [Category!]!
-=======
   "Instrument configuration for a sound recording"
   type Instrument {
     piano: Boolean!
@@ -101,20 +66,10 @@ const typeDefs = `
     getSound(_id: ID!): Sound
 
     "Get the currently logged-in user's profile"
->>>>>>> origin
     me: User
   }
 
   type Mutation {
-<<<<<<< HEAD
-    addUser(input: UserInput!): Auth
-    login(email: String!, password: String!): Auth
-    addSound(name: String!, fileUrl: String!, category: ID!): Sound!
-    deleteSound(id: ID!): Boolean!
-    addCategory(name: String!): Category!
-    deleteCategory(id: ID!): Boolean!
-    createSound(userId: ID!, title: String!, audioUrl: String!): Sound!
-=======
     "Create a new user account"
     addUser(input: UserInput!): Auth
 
@@ -139,7 +94,6 @@ const typeDefs = `
       firstName: String
       lastName: String
     ): User!
->>>>>>> origin
   }
 `;
 export default typeDefs;

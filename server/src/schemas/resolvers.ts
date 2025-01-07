@@ -140,6 +140,7 @@ const resolvers = {
 
         return { token, user };
       } catch (error) {
+        console.log ("here is your error", error)
         if (error instanceof GraphQLError) throw error;
         throw new GraphQLError('Failed to create user', {
           extensions: { code: 'DATABASE_ERROR' }
