@@ -1,46 +1,42 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { GraphQLError } from 'graphql';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const saltRounds = 10;
-
-// Middleware to authenticate token and attach user to request
 export const authenticateToken = ({ req }: any) => {
   // Allows token to be sent via req.body, req.query, or headers
   let token = req.body.token || req.query.token || req.headers.authorization;
 
   // If the token is sent in the authorization header, extract the token from the header
-  if (req.headers.authorization) {
-    token = token.split(' ').pop().trim();
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+    token = req.headers.authorization.split(' ')[1]; // Get the token part after "Bearer "
   }
 
-  // If no token is provided, return the request object as is
+  // If no token is provided, return an empty object (no user context)
   if (!token) {
-    return req;
+    return {};
   }
 
   // Try to verify the token
   try {
-    const { data }: any = jwt.verify(token, process.env.JWT_SECRET_KEY || '', { maxAge: '2hr' });
-    // If the token is valid, attach the user data to the request object
-    req.user = data;
-  } catch (err) {
-    // If the token is invalid, log an error message
-    console.log('Invalid token');
-  }
+    const { data }: any = jwt.verify(token, process.env.JWT_SECRET_KEY || '', { maxAge: '2h' });
 
-  // Return the request object
-  return req;
+    // If the token is valid, return the user data in the context
+    return { user: token, ...data };
+  } catch (err) {
+    console.error('Invalid token', err);
+
+    // Return an empty object if the token is invalid
+    return {};
+  }
 };
 
 // Function to sign a new token when user logs in or registers
 export const signToken = (firstName: string, lastName: string, email: string, _id: unknown) => {
   // Create a payload with the user information
   const payload = { firstName, lastName, email, _id };
-  const secretKey: any = process.env.JWT_SECRET_KEY; // Get the secret key from environment variables
+  const secretKey: string = process.env.JWT_SECRET_KEY || ''; // Get the secret key from environment variables
 
   // Sign the token with the payload and secret key, and set it to expire in 2 hours
   return jwt.sign({ data: payload }, secretKey, { expiresIn: '2h' });
@@ -48,7 +44,7 @@ export const signToken = (firstName: string, lastName: string, email: string, _i
 
 // Function to hash passwords before saving them
 export const hashPassword = async (password: string): Promise<string> => {
-  const salt = await bcrypt.genSalt(saltRounds);
+  const salt = await bcrypt.genSalt(10);
   return bcrypt.hash(password, salt);
 };
 
@@ -58,10 +54,10 @@ export const comparePassword = async (inputPassword: string, storedPassword: str
 };
 
 // Custom error class for authentication-related issues
-export class AuthenticationError extends GraphQLError {
+export class AuthenticationError extends Error {
   constructor(message: string) {
-    super(message, undefined, undefined, undefined, ['UNAUTHENTICATED']);
-    Object.defineProperty(this, 'name', { value: 'AuthenticationError' });
+    super(message);
+    this.name = 'AuthenticationError';
   }
 }
 
