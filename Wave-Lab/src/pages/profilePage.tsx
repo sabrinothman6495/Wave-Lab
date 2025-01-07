@@ -10,7 +10,6 @@ import {
 import NavBar from "../components/navbar/navbar";
 import Title from "../components/navbar/title";
 import { Avatar } from "../components/ui/avatar"
-import "./profilePage.css";
 
 
 // Color palette for avatars
@@ -68,7 +67,7 @@ const Profile: React.FC = () => {
 
   return (
     <Box>
-      <Title logo="https://via.placeholder.com/100" title="Wave Lab" />
+      <Title title="Wave Lab" />
       <NavBar profilePage="/profile" homePage="/homePage" landingPage="/" />
       <Box
         maxW="400px"
@@ -116,9 +115,9 @@ const Profile: React.FC = () => {
             </>
           ) : (
             <>
-              <Text fontSize="lg">
+              <Heading size="lg">
                 {userProfile.firstName} {userProfile.lastName}
-              </Text>
+              </Heading>
               <Text fontSize="md" color="gray.600">
                 Email: {userProfile.email}
               </Text>
@@ -161,4 +160,3 @@ const Profile: React.FC = () => {
 };
 
 export default Profile;
-
