@@ -1,135 +1,64 @@
-/* Default Theme Variables */
 :root {
-    --background-color: #ffffff; /* Light mode background */
-    --text-color: #000000; /* Light mode text */
-    --input-bg: #f8f9fa; /* Light mode input background */
-    --input-border: #ccc; /* Light mode input border */
-    --card-bg: #ffffff; /* Light mode card background */
-    --card-shadow: rgba(0, 0, 0, 0.1); /* Light mode card shadow */
-    --button-bg: #007bff; /* Button background */
-    --button-hover-bg: #0056b3; /* Button hover background */
-    --button-text-color: white; /* Button text color */
-  }
-  
-  /* Dark Mode Overrides */
-  .dark-mode {
-    --background-color: #121212; /* Dark mode background */
-    --text-color: #ffffff; /* Dark mode text */
-    --input-bg: #333333; /* Dark mode input background */
-    --input-border: #555555; /* Dark mode input border */
-    --card-bg: #1e1e1e; /* Dark mode card background */
-    --card-shadow: rgba(255, 255, 255, 0.1); /* Dark mode card shadow */
-    --button-bg: #0056b3; /* Button background for dark mode */
-    --button-hover-bg: #003e7e; /* Button hover background for dark mode */
-    --button-text-color: white; /* Button text color for dark mode */
-  }
-  
-  /* General Body Styles */
-  body {
-    background-color: var(--background-color);
-    color: var(--text-color);
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for theme changes */
-  }
-  
-  /* Profile Card */
-  .profile-card {
-    background-color: var(--card-bg);
-    box-shadow: 0 4px 6px var(--card-shadow);
-    border-radius: 10px;
-    padding: 20px;
-    margin: 20px auto;
-    max-width: 400px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  /* Avatar */
-  .profile-card .avatar {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin: 0 auto;
-    display: block;
-    background-color: var(--input-bg); /* Placeholder background */
-  }
-  
-  /* Headings and Text */
-  .profile-card h1,
-  .profile-card h2,
-  .profile-card p {
-    margin: 10px 0;
-    text-align: center;
-  }
-  
-  /* Inputs for Editing */
-  .profile-card input {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    background-color: var(--input-bg);
-    border: 1px solid var(--input-border);
-    border-radius: 5px;
-    color: var(--text-color);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-  }
-  
-  .profile-card input::placeholder {
-    color: var(--text-color);
-    opacity: 0.7;
-  }
-  
-  /* Buttons */
-  .profile-card button {
-    display: inline-block;
-    width: 100px;
-    padding: 10px;
-    margin: 5px;
-    background-color: var(--button-bg);
-    color: var(--button-text-color);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .profile-card button:hover {
-    background-color: var(--button-hover-bg);
-    transform: translateY(-2px); /* Slight hover effect */
-  }
-  
-  .profile-card button:active {
-    transform: translateY(0); /* Reset on click */
-  }
-  
-  /* Dark Mode Toggle */
-  .theme-toggle-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background-color: var(--button-bg);
-    color: var(--button-text-color);
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .theme-toggle-btn:hover {
-    background-color: var(--button-hover-bg);
-  }
-  
-  /* Saved Sounds Section */
-  .saved-sounds {
-    margin-top: 20px;
-  }
-  
-  .saved-sounds p {
-    margin: 5px 0;
-  }
-  
+  --background-color: #ffffff;
+  --text-color: #000000;
+  --heading-color: #1a202c;
+  --input-bg-color: #f7fafc;
+  --button-bg-color: #3182ce;
+  --button-text-color: #ffffff;
+  --border-color: #e2e8f0;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode {
+  --background-color: #2d3748;
+  --text-color: #e2e8f0;
+  --heading-color: #ffffff;
+  --input-bg-color: #4a5568;
+  --button-bg-color: #2b6cb0;
+  --button-text-color: #e2e8f0;
+  --border-color: #4a5568;
+  --shadow-color: rgba(255, 255, 255, 0.1);
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: Arial, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--heading-color);
+}
+
+input {
+  background-color: var(--input-bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button {
+  background-color: var(--button-bg-color);
+  color: var(--button-text-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.box {
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 6px var(--shadow-color);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}

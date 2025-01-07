@@ -1,0 +1,84 @@
+/* Root variables for light and dark modes */
+:root {
+    --background-light: #ffffff;
+    --background-dark: #121212;
+    --text-light: #000000;
+    --text-dark: #ffffff;
+    --accent-light: #007bff;
+    --accent-dark: #82cfff;
+  }
+  
+  /* Light mode */
+  .light-mode {
+    --background-color: var(--background-light);
+    --text-color: var(--text-light);
+    --accent-color: var(--accent-light);
+  }
+  
+  /* Dark mode */
+  .dark-mode {
+    --background-color: var(--background-dark);
+    --text-color: var(--text-dark);
+    --accent-color: var(--accent-dark);
+  }
+  
+  /* Apply theme variables */
+  body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    font-family: Arial, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  /* Instrument Selector container */
+  .instrument-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid var(--accent-color);
+    border-radius: 5px;
+    width: 200px;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Label styling */
+  .instrument-selector label {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--text-color);
+  }
+  
+  /* Dropdown styling */
+  .instrument-selector select {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid var(--accent-color);
+    border-radius: 5px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  /* Hover effect for the dropdown */
+  .instrument-selector select:hover {
+    border-color: var(--accent-color);
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .instrument-selector {
+      width: 90%;
+      padding: 10px;
+    }
+  
+    .instrument-selector label,
+    .instrument-selector select {
+      font-size: 14px;
+    }
+  }
+  

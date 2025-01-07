@@ -1,4 +1,5 @@
 import React from "react";
+import "./instrument.css";
 
 interface InstrumentSelectorProps {
   onSelectInstrument: (instrument: string) => void;

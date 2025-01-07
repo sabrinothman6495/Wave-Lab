@@ -10,6 +10,7 @@ import {
 import NavBar from "../components/navbar/navbar";
 import Title from "../components/navbar/title";
 import { Avatar } from "../components/ui/avatar"
+import "./profilePage.css";
 
 
 // Color palette for avatars
@@ -115,9 +116,9 @@ const Profile: React.FC = () => {
             </>
           ) : (
             <>
-              <Heading size="lg">
+              <Text fontSize="lg">
                 {userProfile.firstName} {userProfile.lastName}
-              </Heading>
+              </Text>
               <Text fontSize="md" color="gray.600">
                 Email: {userProfile.email}
               </Text>
@@ -160,3 +161,4 @@ const Profile: React.FC = () => {
 };
 
 export default Profile;
+

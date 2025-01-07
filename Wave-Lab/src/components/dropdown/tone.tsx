@@ -1,4 +1,5 @@
 import React from "react";
+import "./tone.css";
 
 interface EQControlsProps {
   onEQChange: (preset: string) => void;

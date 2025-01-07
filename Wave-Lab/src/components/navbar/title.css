@@ -1,36 +1,26 @@
-/* Container for the title component */
 .title-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px; /* Spacing between logo and title */
-    padding: 10px;
-    background-color: #f4f4f9; /* Light background */
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Logo image */
-  .title-container img {
-    position: relative; /* Optional: relative positioning */
-    width: 50px;
-    height: 50px;
-    object-fit: cover; /* Ensure logo fits within bounds */
-    border-radius: 50%; /* Optional: circular logo */
-    border: 2px solid #007bff; /* Optional: border around logo */
-  }
-  
-  /* Title text */
-  .title-container h1 {
-    position: relative; /* Optional: absolute positioning */
-    font-size: 24px;
-    font-weight: bold;
-    color: #333; /* Dark text color */
-    margin: 0; /* Reset default margin */
-    text-transform: uppercase; /* Optional: uppercase title */
-    letter-spacing: 1px; /* Slight spacing for readability */
-  
-  }
-  
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: var(--background-color);
+  border-bottom: 1px solid var(--border-color);
+}
 
+.logo {
+  height: 50px;
+  width: auto;
+}
+
+.dark-mode {
+  margin-right: auto;
+}
+
+.my-account {
+  margin-left: auto;
+}
+
+.logo {
+  height: 50px;
+  width: auto;
+}
