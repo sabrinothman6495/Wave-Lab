@@ -1,39 +1,62 @@
-.my-account-container {
+/* Default Theme Variables */
+:root {
+    --account-container-bg: transparent; /* Background for the container */
+    --account-button-bg: lightgray; /* Button background color */
+    --account-button-text: black; /* Button text color */
+    --account-button-hover-bg: gray; /* Button hover background */
+    --account-button-hover-text: white; /* Button hover text color */
+    --account-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Default shadow */
+    --account-hover-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Hover shadow */
+  }
+  
+  /* Dark Mode Overrides */
+  .dark-mode {
+    --account-container-bg: transparent; /* Keep it transparent */
+    --account-button-bg: #555; /* Darker button background for dark mode */
+    --account-button-text: white; /* White text for dark mode button */
+    --account-button-hover-bg: darkgray; /* Slightly lighter background on hover */
+    --account-button-hover-text: white; /* Keep hover text white */
+    --account-shadow: 0 4px 6px rgba(255, 255, 255, 0.1); /* Subtle shadow for dark mode */
+    --account-hover-shadow: 0 6px 8px rgba(255, 255, 255, 0.15); /* Stronger shadow for dark mode */
+  }
+  
+  /* Container Styles */
+  .my-account-container {
     display: flex;
     justify-content: flex-end; /* Align the button to the right */
     align-items: center; /* Center the button vertically */
     width: 100%; /* Full width to span the entire row */
     padding: 10px 20px; /* Add spacing inside the container */
     margin-bottom: 10px; /* Ensure spacing below the container */
-    background-color: transparent; /* Match the title's background color */
+    background-color: var(--account-container-bg); /* Dynamic background color */
     box-sizing: border-box; /* Include padding in width calculation */
   }
   
+  /* Button Styles */
   .my-account-container button {
-    background-color: lightgray; /* Light gray background */
-    color: black; /* Black text */
+    background-color: var(--account-button-bg); /* Dynamic button background */
+    color: var(--account-button-text); /* Dynamic button text color */
     border: none; /* Remove border */
     padding: 10px 20px; /* Add padding inside the button */
     border-radius: 25px; /* Fully rounded corners */
     cursor: pointer; /* Pointer cursor on hover */
     font-size: 16px; /* Adjust font size */
     font-weight: bold; /* Bold text for visibility */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+    box-shadow: var(--account-shadow); /* Dynamic shadow */
     transition: all 0.3s ease-in-out; /* Smooth transitions on hover */
   }
   
-  /* Hover effect for the button */
+  /* Hover Effect for the Button */
   .my-account-container button:hover {
-    background-color: gray; /* Darker gray on hover */
-    color: white; /* White text on hover */
+    background-color: var(--account-button-hover-bg); /* Dynamic hover background */
+    color: var(--account-button-hover-text); /* Dynamic hover text color */
     transform: translateY(-2px); /* Slight upward movement on hover */
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+    box-shadow: var(--account-hover-shadow); /* Dynamic hover shadow */
   }
   
-  /* Focus effect for accessibility */
+  /* Focus Effect for Accessibility */
   .my-account-container button:focus {
     outline: none; /* Remove default outline */
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Add focus ring for accessibility */
   }
-  
   

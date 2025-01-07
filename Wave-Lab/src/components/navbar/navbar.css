@@ -1,43 +1,58 @@
-/* Navigation Bar Container */
+/* Define CSS Variables */
+:root {
+  --nav-background: #333; /* Default (Dark Mode) Navigation Background */
+  --nav-text-color: white; /* Default (Dark Mode) Text Color */
+  --nav-link-hover-bg: #555; /* Default (Dark Mode) Hover Background */
+  --nav-link-hover-text: #ddd; /* Default (Dark Mode) Hover Text */
+}
+
+.light-mode {
+  --nav-background: #f8f9fa; /* Light Mode Navigation Background */
+  --nav-text-color: #000; /* Light Mode Text Color */
+  --nav-link-hover-bg: #e2e6ea; /* Light Mode Hover Background */
+  --nav-link-hover-text: #333; /* Light Mode Hover Text */
+}
+
 nav {
-    background-color: #333; /* Dark background for the nav bar */
-    color: white; /* White text color */
-    padding: 10px 20px; /* Padding for spacing */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-  }
-  
-  /* Navigation List */
+  background-color: var(--nav-background); /* Use variable for background */
+  color: var(--nav-text-color); /* Use variable for text color */
+  padding: 10px 20px; /* Padding for spacing */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+/* Navigation List */
+nav ul {
+  display: flex; /* Horizontal layout for list items */
+  list-style: none; /* Remove bullets from list */
+  margin: 0;
+  padding: 0;
+  justify-content: center; /* Center-align the nav items */
+  gap: 20px; /* Space between list items */
+}
+
+/* Navigation Links */
+nav ul li a {
+  text-decoration: none; /* Remove underline */
+  color: var(--nav-text-color); /* Use variable for text color */
+  font-size: 16px;
+  font-weight: bold;
+  padding: 8px 12px; /* Add padding for clickable area */
+  border-radius: 4px; /* Rounded corners for links */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover effect */
+}
+
+/* Hover Effect */
+nav ul li a:hover {
+  background-color: var(--nav-link-hover-bg); /* Use variable for hover background */
+  color: var(--nav-link-hover-text); /* Use variable for hover text color */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   nav ul {
-    display: flex; /* Horizontal layout for list items */
-    list-style: none; /* Remove bullets from list */
-    margin: 0;
-    padding: 0;
-    justify-content: center; /* Center-align the nav items */
-    gap: 20px; /* Space between list items */
+    flex-direction: column; /* Stack items vertically on smaller screens */
+    gap: 10px; /* Adjust spacing for smaller screens */
   }
-  
-  /* Navigation Links */
-  nav ul li a {
-    text-decoration: none; /* Remove underline */
-    color: white; /* White text color */
-    font-size: 16px;
-    font-weight: bold;
-    padding: 8px 12px; /* Add padding for clickable area */
-    border-radius: 4px; /* Rounded corners for links */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover effect */
-  }
-  
-  /* Hover Effect */
-  nav ul li a:hover {
-    background-color: #555; /* Slightly lighter background on hover */
-    color: #ddd; /* Light gray text on hover */
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    nav ul {
-      flex-direction: column; /* Stack items vertically on smaller screens */
-      gap: 10px; /* Adjust spacing for smaller screens */
-    }
-  }
-  
+}
+
