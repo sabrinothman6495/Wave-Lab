@@ -8,11 +8,8 @@ const typeDefs = `
     sounds: [Sound!]!
     createdAt: String!
     updatedAt: String!
-    createdAt: String!
-    updatedAt: String!
   }
 
-  "A sound recording with its associated metadata"
   "A sound recording with its associated metadata"
   type Sound {
     _id: ID!
@@ -35,7 +32,6 @@ const typeDefs = `
   }
 
   "Input for creating a new user"
-  "Input for creating a new user"
   input UserInput {
     firstName: String!
     lastName: String!
@@ -54,11 +50,9 @@ const typeDefs = `
   type Auth {
     token: String!
     user: User!
-    user: User!
   }
 
   type Query {
-    "Get all users (admin only)"
     "Get all users (admin only)"
     users: [User!]!
 
@@ -77,10 +71,7 @@ const typeDefs = `
 
   type Mutation {
     "Create a new user account"
-    "Create a new user account"
     addUser(input: UserInput!): Auth
-
-    "Log in to an existing account"
 
     "Log in to an existing account"
     login(email: String!, password: String!): Auth

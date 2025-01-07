@@ -1,8 +1,11 @@
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 import { GraphQLError } from 'graphql';
 import dotenv from 'dotenv';
 
 dotenv.config();
+
+const saltRounds = 10;
 
 // Middleware to authenticate token and attach user to request
 export const authenticateToken = ({ req }: any) => {
@@ -41,6 +44,17 @@ export const signToken = (firstName: string, lastName: string, email: string, _i
 
   // Sign the token with the payload and secret key, and set it to expire in 2 hours
   return jwt.sign({ data: payload }, secretKey, { expiresIn: '2h' });
+};
+
+// Function to hash passwords before saving them
+export const hashPassword = async (password: string): Promise<string> => {
+  const salt = await bcrypt.genSalt(saltRounds);
+  return bcrypt.hash(password, salt);
+};
+
+// Function to compare the provided password with the stored hashed password
+export const comparePassword = async (inputPassword: string, storedPassword: string): Promise<boolean> => {
+  return bcrypt.compare(inputPassword, storedPassword);
 };
 
 // Custom error class for authentication-related issues

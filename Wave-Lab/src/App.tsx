@@ -61,25 +61,11 @@ const AppRoutes: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <div>
-        <img src="https://via.placeholder.com/100" alt="Wave Lab Logo" />
-        <h1>Wave Lab</h1>
-      </div>
-      {/* NavBar displayed on all pages */}
-      <NavBar
-        profilePage="/profile"
-        homePage="/home"
-        landingPage="/"
-      />
-      
-      {/* Define routes for each page */}
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/home" element={<Home />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <AppRoutes />
+      </Router>
+    </AuthProvider>
   );
 };
 
